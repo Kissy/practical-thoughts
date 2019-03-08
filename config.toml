@@ -1,5 +1,5 @@
 # Site settings
-baseurl = "http://blog.kissy.fr"
+baseurl = "http://blog.kissy.fr/"
 languageCode = "en"
 title = "Practical Thoughts"
 theme = "hugo-theme-cactus-plus"
