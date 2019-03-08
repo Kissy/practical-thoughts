@@ -1,0 +1,66 @@
+# Site settings
+baseurl = "http://blog.kissy.fr"
+languageCode = "en"
+title = "Practical Thoughts"
+theme = "hugo-theme-cactus-plus"
+googleAnalytics = "UA-4258818-9"
+hasCJKLanguage = false
+pygmentsUseClasses = false
+pygmentsStyle = "friendly"
+
+[params]
+    author = "Guillaume Le Biller"
+    description = "Any fool can know. The point is to understand."
+    bio = "author biography"
+
+    #	twitter = "your_twitter_id"
+    #	facebook = "your_facebook_id"
+
+    enableRSS = false
+    enableToc = false
+
+    enableDisqus = false
+    disqusShortname = "your_disqus_short_name"
+
+
+    enableSummary = true
+    useDescriptionReplaceSummary = false
+
+
+    enableGoogleAnalytics = true
+    enableBaiduAnalytics = false
+    baiduAnalytics = 'your_baidu_analysis_code'
+
+    enableTwitterCard = true
+    twitterCardImage = ""
+
+    customCSS = []
+    customJS  = []
+
+    # Navigation links
+    home = ""
+    about = ""
+    archive = ""
+    subscribe = ""
+
+    olderPosts = ""
+    newerPosts = ""
+    copyright = ""
+
+    showLatestPosts = false
+    readMore = ""
+
+    enableShare = false
+    tweet = ""
+    share = ""
+
+    title404 = ""
+    subtitle404 = ""
+
+    iconFont = "font-awesome"
+
+    socialIconStyle = ""
+
+
+[social]
+	github-square = "https://www.github.com/Kissy"
