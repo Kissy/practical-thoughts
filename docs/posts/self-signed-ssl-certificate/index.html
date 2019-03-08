@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="http://blog.kissy.frimages/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="Self-signed SSL certificate"/>
+  <meta name="twitter:description" content="Creating a self-signed SSL certificate is easy,
+you can found lots and lots of tutorial on internet.
+Creating valid, multiple sub-domains, self-signed SSL certificate is another story.
+
+"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@Guillaume Le Biller"/>
+  
+
+
+
+		
+		<meta name="author" content="Guillaume Le Biller">
+		<meta name="description" content="Any fool can know. The point is to understand.">
+		<meta name="generator" content="Hugo 0.44" />
+		<title>Self-signed SSL certificate &middot; Practical Thoughts</title>
+		<link rel="shortcut icon" href="http://blog.kissy.frimages/favicon.ico">
+		<link rel="stylesheet" href="http://blog.kissy.frcss/style.css">
+		<link rel="stylesheet" href="http://blog.kissy.frcss/highlight.css">
+
+		
+		<link rel="stylesheet" href="http://blog.kissy.frcss/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='http://blog.kissy.fr'> <span class="arrow">←</span>Home</a>
+	
+	<a href='http://blog.kissy.frposts'>Archive</a>
+	<a href='http://blog.kissy.frtags'>Tags</a>
+	<a href='http://blog.kissy.frabout'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Self-signed SSL certificate
+                    </h1>
+                    <h2 class="headline">
+                    Mar 1, 2019
+                    · 488 words
+                    · 3 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>Creating a self-signed SSL certificate is easy,
+you can found <a href="https://devcenter.heroku.com/articles/ssl-certificate-self">lots</a> and <a href="https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04">lots</a> of tutorial on internet.
+Creating valid, multiple sub-domains, self-signed SSL certificate is another story.</p>
+
+<p></p>
+
+<h1 id="generate-the-root-certificate">Generate the root certificate</h1>
+
+<p>The first required step before having our certificate is to generate the root certificate.
+This certificate is used to sign all other generated certificates and
+need to be imported into any client keystore.</p>
+
+<h2 id="creating-the-certificate-configuration-file-root-cer-conf">Creating the certificate configuration file <code>root.cer.conf</code></h2>
+
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#007020;font-weight:bold">[ req ]</span>
+<span style="color:#4070a0">default_bits</span> <span style="color:#666">=</span> <span style="color:#4070a0">4096</span>
+<span style="color:#4070a0">default_days</span> <span style="color:#666">=</span> <span style="color:#4070a0">36500</span>
+<span style="color:#4070a0">default_keyfile</span> <span style="color:#666">=</span> <span style="color:#4070a0">root.cer.key</span>
+<span style="color:#4070a0">encrypt_key</span> <span style="color:#666">=</span> <span style="color:#4070a0">no</span>
+<span style="color:#4070a0">default_md</span> <span style="color:#666">=</span> <span style="color:#4070a0">sha256</span>
+<span style="color:#4070a0">prompt</span> <span style="color:#666">=</span> <span style="color:#4070a0">no</span>
+<span style="color:#4070a0">utf8</span> <span style="color:#666">=</span> <span style="color:#4070a0">yes</span>
+<span style="color:#4070a0">distinguished_name</span> <span style="color:#666">=</span> <span style="color:#4070a0">root_distinguished_name</span>
+<span style="color:#4070a0">x509_extensions</span> <span style="color:#666">=</span> <span style="color:#4070a0">root_extensions</span>
+
+<span style="color:#007020;font-weight:bold">[ root_distinguished_name ]</span>
+<span style="color:#4070a0">CN</span> <span style="color:#666">=</span> <span style="color:#4070a0">Root CA</span>
+<span style="color:#4070a0">O</span> <span style="color:#666">=</span> <span style="color:#4070a0">Kissy</span>
+<span style="color:#4070a0">C</span> <span style="color:#666">=</span> <span style="color:#4070a0">FR</span>
+
+<span style="color:#007020;font-weight:bold">[ root_extensions ]</span>
+<span style="color:#4070a0">basicConstraints</span><span style="color:#666">=</span><span style="color:#4070a0">CA:TRUE</span>
+<span style="color:#4070a0">authorityKeyIdentifier</span><span style="color:#666">=</span><span style="color:#4070a0">keyid,issuer</span>
+<span style="color:#4070a0">keyUsage</span> <span style="color:#666">=</span> <span style="color:#4070a0">cRLSign, keyCertSign</span></code></pre></div>
+
+<p>The important configuration parameters is the <a href="#distinguished-name">distinguished_name</a>.</p>
+
+<h2 id="generate-the-certificate-with-openssl">Generate the certificate with OpenSSL</h2>
+
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl req -new -x509 -nodes -config root.cer.conf -out root.cer</code></pre></div>
+
+<p>This will generate two files: <code>root.cer</code>, the certificate
+and <code>root.cer.key</code> the matching private key.</p>
+
+<h1 id="generate-a-certificate-signing-request-csr">Generate a Certificate Signing Request (CSR)</h1>
+
+<p>In order to create a new certificate, the first step is to create a CSR.
+CSR are used to specifies all details of the future certificate to be signed,
+including extended key usage (EKU) or other valid sub-domains.</p>
+
+<h1 id="create-the-csr-configuration-file-domain-tech-cer-conf">Create the CSR configuration file <code>domain.tech.cer.conf</code></h1>
+
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#007020;font-weight:bold">[ req ]</span>
+<span style="color:#4070a0">default_bits</span> <span style="color:#666">=</span> <span style="color:#4070a0">4096</span>
+<span style="color:#4070a0">default_days</span> <span style="color:#666">=</span> <span style="color:#4070a0">36500</span>
+<span style="color:#4070a0">default_keyfile</span> <span style="color:#666">=</span> <span style="color:#4070a0">signed.key</span>
+<span style="color:#4070a0">encrypt_key</span> <span style="color:#666">=</span> <span style="color:#4070a0">no</span>
+<span style="color:#4070a0">default_md</span> <span style="color:#666">=</span> <span style="color:#4070a0">sha256</span>
+<span style="color:#4070a0">prompt</span> <span style="color:#666">=</span> <span style="color:#4070a0">no</span>
+<span style="color:#4070a0">utf8</span> <span style="color:#666">=</span> <span style="color:#4070a0">yes</span>
+<span style="color:#4070a0">distinguished_name</span> <span style="color:#666">=</span> <span style="color:#4070a0">domain_tech_distinguished_name</span>
+<span style="color:#4070a0">req_extensions</span> <span style="color:#666">=</span> <span style="color:#4070a0">domain_tech_extensions</span>
+
+<span style="color:#007020;font-weight:bold">[ domain_tech_distinguished_name ]</span>
+<span style="color:#4070a0">CN</span> <span style="color:#666">=</span> <span style="color:#4070a0">domain.tech</span>
+
+<span style="color:#007020;font-weight:bold">[ domain_tech_extensions ]</span>
+<span style="color:#4070a0">basicConstraints</span><span style="color:#666">=</span><span style="color:#4070a0">CA:FALSE</span>
+<span style="color:#4070a0">keyUsage</span> <span style="color:#666">=</span> <span style="color:#4070a0">digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment</span>
+<span style="color:#4070a0">extendedKeyUsage</span> <span style="color:#666">=</span> <span style="color:#4070a0">serverAuth, clientAuth</span>
+<span style="color:#4070a0">subjectAltName</span><span style="color:#666">=</span><span style="color:#4070a0">@domain_tech_alt_names</span>
+
+<span style="color:#007020;font-weight:bold">[ domain_tech_alt_names ]</span>
+<span style="color:#4070a0">DNS.1</span> <span style="color:#666">=</span> <span style="color:#4070a0">domain.tech</span>
+<span style="color:#4070a0">DNS.2</span> <span style="color:#666">=</span> <span style="color:#4070a0">*.domain.tech</span>
+<span style="color:#4070a0">DNS.3</span> <span style="color:#666">=</span> <span style="color:#4070a0">*.dev.domain.tech</span>
+<span style="color:#4070a0">DNS.4</span> <span style="color:#666">=</span> <span style="color:#4070a0">*.staging.domain.tech</span></code></pre></div>
+
+<p>The important properties are:</p>
+
+<ul>
+<li><a href="#distinguished-name">distinguished_name</a></li>
+<li>keyUsage</li>
+<li>extendedKeyUsage</li>
+<li>subjectAltName — The list of all alternate domains &amp; sub-domains</li>
+</ul>
+
+<h2 id="generate-the-csr-with-openssl">Generate the CSR with OpenSSL</h2>
+
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl req -new -nodes -config domain.tech.cer.conf -out domain.tech.csr</code></pre></div>
+
+<p>This will generate the file <code>domain.tech.csr</code>.</p>
+
+<h1 id="generate-a-signed-certificate">Generate a signed certificate</h1>
+
+<p>Once the root certificate and the CSR are generated,
+both can be used to sign a new SSL certificates.</p>
+
+<h2 id="create-certificate-extfile-domain-tech-ext">Create certificate extfile <code>domain.tech.ext</code></h2>
+
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-ini" data-lang="ini"><span style="color:#4070a0">authorityKeyIdentifier</span><span style="color:#666">=</span><span style="color:#4070a0">keyid,issuer</span>
+<span style="color:#4070a0">basicConstraints</span><span style="color:#666">=</span><span style="color:#4070a0">CA:FALSE</span>
+<span style="color:#4070a0">keyUsage</span> <span style="color:#666">=</span> <span style="color:#4070a0">digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment</span>
+<span style="color:#4070a0">extendedKeyUsage</span> <span style="color:#666">=</span> <span style="color:#4070a0">serverAuth, clientAuth</span>
+<span style="color:#4070a0">subjectAltName</span> <span style="color:#666">=</span> <span style="color:#4070a0">@domain_tech_alt_names</span>
+
+<span style="color:#007020;font-weight:bold">[domain_tech_alt_names]</span>
+<span style="color:#4070a0">DNS.1</span> <span style="color:#666">=</span> <span style="color:#4070a0">domain.tech</span>
+<span style="color:#4070a0">DNS.2</span> <span style="color:#666">=</span> <span style="color:#4070a0">*.domain.tech</span>
+<span style="color:#4070a0">DNS.3</span> <span style="color:#666">=</span> <span style="color:#4070a0">*.dev.domain.tech</span>
+<span style="color:#4070a0">DNS.4</span> <span style="color:#666">=</span> <span style="color:#4070a0">*.staging.domain.tech</span></code></pre></div>
+
+<p>The extfile properties should be exactly the same as in the CSR.</p>
+
+<h2 id="generate-sign-the-new-certificate-using-openssl">Generate &amp; sign the new certificate using openssl</h2>
+
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">openssl x509 -req -in domain.tech.csr -CA root.cer -CAkey root.cer.key -CAcreateserial -out domain.tech.cer -extfile domain.tech.ext</code></pre></div>
+
+<p>This will generate the certificate <code>domain.tech.cer</code>.</p>
+
+<h2 id="optional-bundle-both-root-signed-certificate-together">Optional : Bundle both root &amp; signed certificate together</h2>
+
+<p>Some software (like Nginx) requires to have the full certificate chain to operate.</p>
+
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">cat domain.tech.cer root.cer &gt; domain.tech.bundle.cer</code></pre></div>
+
+<h1 id="appendix">Appendix</h1>
+
+<h2 id="distinguished-name">Distinguished Name</h2>
+
+<p>The Distinguished Name (DN) uniquely identifies an entity in an X.509 certificate.
+The following attribute types are commonly found in the DN of certificates.</p>
+
+<table>
+<thead>
+<tr>
+<th>Distinguished Name Field</th>
+<th>Description</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>CN</td>
+<td>Common Name — Unique identifying name</td>
+</tr>
+
+<tr>
+<td>DC</td>
+<td>Domain component</td>
+</tr>
+
+<tr>
+<td>OU</td>
+<td>Organizational Unit</td>
+</tr>
+
+<tr>
+<td>O</td>
+<td>Organization</td>
+</tr>
+
+<tr>
+<td>L</td>
+<td>Locality</td>
+</tr>
+
+<tr>
+<td>S</td>
+<td>State</td>
+</tr>
+
+<tr>
+<td>C</td>
+<td>Country — two letters ISO code</td>
+</tr>
+</tbody>
+</table>
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/Kissy">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Guillaume Le Biller
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="http://blog.kissy.frjs/jquery-3.3.1.min.js"></script>
+<script src="http://blog.kissy.frjs/main.js"></script>
+<script src="http://blog.kissy.frjs/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-4258818-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+    </body>
+</html>

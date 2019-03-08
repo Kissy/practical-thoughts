@@ -7,6 +7,7 @@ googleAnalytics = "UA-4258818-9"
 hasCJKLanguage = false
 pygmentsUseClasses = false
 pygmentsStyle = "friendly"
+publishDir = "docs"
 
 [params]
     author = "Guillaume Le Biller"
