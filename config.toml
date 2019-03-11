@@ -12,7 +12,7 @@ publishDir = "docs"
 [params]
     author = "Guillaume Le Biller"
     description = "Any fool can know. The point is to understand."
-    bio = "author biography"
+    bio = "I am a curious and constantly learning engineer passionate about all technologies"
 
     #	twitter = "your_twitter_id"
     #	facebook = "your_facebook_id"

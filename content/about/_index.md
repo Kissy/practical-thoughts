@@ -4,12 +4,6 @@ title = "About"
 hidden = true
 +++
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa ullam earum dolorum! Sed, perspiciatis.
+I support the [DevOps Culture](https://martinfowler.com/bliki/DevOpsCulture.html) thinking that automation, colaboration and autonomous team are keys to success.
 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-
-***
-
-### Lorem ipsum dolor.
-
-Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea dicta corporis ad inventore itaque impedit dolor atque amet exercitationem! Veniam qui voluptas maiores vel laudantium necessitatibus, velit ducimus! Iste hic facere, accusamus fugiat enim facilis.
+Convinced about Machine Learning promises, I am learning all the technology breakthrough in the past few years in both Reinforcement Learning & Supervised/Unsupervised Learning.
