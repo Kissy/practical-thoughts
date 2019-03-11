@@ -13,10 +13,10 @@
     
     <item>
       <title>Self-signed SSL certificate for multiple domains</title>
-      <link>http://blog.kissy.fr/posts/self-signed-ssl-certificate/</link>
+      <link>http://blog.kissy.fr/posts/self-signed-ssl-certificate-for-multiple-domains/</link>
       <pubDate>Fri, 01 Mar 2019 00:00:00 +0200</pubDate>
       
-      <guid>http://blog.kissy.fr/posts/self-signed-ssl-certificate/</guid>
+      <guid>http://blog.kissy.fr/posts/self-signed-ssl-certificate-for-multiple-domains/</guid>
       <description>&lt;p&gt;Creating a self-signed SSL certificate is easy,
 you can found &lt;a href=&#34;https://devcenter.heroku.com/articles/ssl-certificate-self&#34;&gt;lots&lt;/a&gt; and &lt;a href=&#34;https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04&#34;&gt;lots&lt;/a&gt; of tutorial on internet.
 Creating valid, multiple domains, self-signed SSL certificate is another story.&lt;/p&gt;
