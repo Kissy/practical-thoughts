@@ -1,12 +1,12 @@
 ---
-title: "Self-signed SSL certificate"
+title: "Self-signed SSL certificate for multiple domains"
 date: 2019-03-01T00:00:00+02:00
 draft: false
 ---
 
 Creating a self-signed SSL certificate is easy, 
 you can found [lots](https://devcenter.heroku.com/articles/ssl-certificate-self) and [lots](https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04) of tutorial on internet. 
-Creating valid, multiple sub-domains, self-signed SSL certificate is another story.
+Creating valid, multiple domains, self-signed SSL certificate is another story.
 
 <!--more-->
 
