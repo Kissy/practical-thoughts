@@ -40,7 +40,15 @@ for a given policy $\pi$ for a known model in an MDP environment.
 		<link rel="stylesheet" href="https://blog.kissy.fr/css/highlight.css">
 
 		
-		<link rel="stylesheet" href="https://blog.kissy.fr/css/font-awesome.min.css">
+		<script async type="text/javascript">
+            (function() {
+                var css = document.createElement('link');
+                css.href = 'https:\/\/blog.kissy.fr\/css/font-awesome.min.css';
+                css.rel = 'stylesheet';
+                css.type = 'text/css';
+                document.getElementsByTagName('head')[0].appendChild(css);
+            })();
+		</script>
 		
 
 		
@@ -179,9 +187,10 @@ new PolicyEvaluationFrozenLake(".policy-evaluation-frozen-lake");
 
         </section>
 
-        <script src="https://blog.kissy.fr/js/main.js"></script>
-<script src="https://blog.kissy.fr/js/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
+        <script type="text/javascript" async src="https://blog.kissy.fr/js/main.js"></script>
+<script type="text/javascript" async src="https://blog.kissy.fr/js/highlight.min.js">
+    hljs.initHighlightingOnLoad();
+</script>
 
 
 
