@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="https://blog.kissy.fr/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="Reinforcement learning : an introduction"/>
+  <meta name="twitter:description" content="
+
+
+Learning by interacting with an environment is how people and animals learns.
+A computer or an agent can also learn the same way.
+
+"/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@Guillaume Le Biller"/>
+  
+
+
+
+		
+		<meta name="author" content="Guillaume Le Biller">
+		<meta name="description" content="Any fool can know. The point is to understand.">
+		<meta name="generator" content="Hugo 0.44" />
+		<title>Reinforcement learning : an introduction &middot; Practical Thoughts</title>
+		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
+		<link rel="stylesheet" href="https://blog.kissy.fr/css/style.css">
+		<link rel="stylesheet" href="https://blog.kissy.fr/css/highlight.css">
+
+		
+		<link rel="stylesheet" href="https://blog.kissy.fr/css/font-awesome.min.css">
+		
+
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://blog.kissy.fr/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://blog.kissy.fr/posts'>Archive</a>
+	<a href='https://blog.kissy.fr/tags'>Tags</a>
+	<a href='https://blog.kissy.fr/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Reinforcement learning : an introduction
+                    </h1>
+                    <h2 class="headline">
+                    Mar 11, 2019
+                    · 860 words
+                    · 5 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="policy-evaluation-demo.css" rel="stylesheet"></link></p>
+
+<p>Learning by interacting with an environment is how people and animals learns.
+A computer or an agent can also learn the same way.</p>
+
+<p></p>
+
+<p>Reinforcement learning is focused on goal-directed learning from interaction
+and is composed by four components : a policy, a reward, a value function and optionally model.</p>
+
+<h1 id="environments">Environments</h1>
+
+<p>Before doing some learning on our environment,
+it&rsquo;s required to first define and describe the environment.</p>
+
+<p>When facing an environment there is a possibility to choose among $n$ actions called the <em>action space</em>.
+After each chosen action, a numerical <em>reward</em> $r$ is received and a new action choice is possible.
+The objective is to maximize the total rewards over some time period
+consisting of $t$ actions or <em>time steps</em>.</p>
+
+<h2 id="model">Model</h2>
+
+<p>The model is the representation of the environment.
+For an environment, it gives the probability of future states given an action.</p>
+
+<h2 id="stationary-problems">Stationary problems</h2>
+
+<p>The simplest problems that can be learned are the stationary problems.
+That is, when the reward probability after each actions do not change at each <em>time step</em>.</p>
+
+<p>The standard example of this is the <a href="https://en.wikipedia.org/wiki/Multi-armed_bandit"><em>k-armed bandit</em></a> problem.</p>
+
+<h3 id="action-value">Action value</h3>
+
+<p>The goal of the agent is trying to maximize the sum of received rewards by choosing the best actions.
+The <em>action value</em> $Q_n$ is the estimate of the expected future received rewards at step $n$
+after choosing an action $a_n$ and receiving the reward $R_n$ and can be computed by:</p>
+
+<p>$$Q_n(a) = Q_n(a) + \frac 1n [R_n - Q_n(a)]$$</p>
+
+<p>This method update the new estimate $Q_n(a)$ to reduce the difference
+ $R_n - Q_n(a)$ by a small step-size $\alpha = \frac 1n$. The difference represent the error
+ of our estimate $Q_n(a)$ that we try to minimize.</p>
+
+<h2 id="non-stationary-problems">Non-Stationary problems</h2>
+
+<p>Environment are almost never stationary because the reward probability is changing over time.
+In such cases it makes sense to give more weight to recent rewards than to long-past rewards.
+One way of doing this is to use a constant step-size:</p>
+
+<p>$$Q(a) = Q(a) + \alpha [R - Q(a)] \text{, with } \alpha \in (0, 1]$$</p>
+
+<h2 id="contextual-problems">Contextual problems</h2>
+
+<p>The two previous problems are nonassociative : there is only single situation, or state,
+for action selection. Most of the time, an environment has more than one state and actions
+need to be chosen based on the current situation.<br />
+The agent have to learn the mapping from states to the actions
+that are the best in those states : the policy $\pi$.</p>
+
+<h1 id="markov-decision-processes">Markov Decision Processes</h1>
+
+<p>Markov Decision Processes (or MDP) are the mathematical representation of
+the reinforcement learning problems or environments.
+This formalize the learning component as the <em>agent</em> interacting with an <em>environment</em> in
+a sequence of discrete time steps, $t = 0, 1, 2, 3, \ldots$. At each time step $t$,
+the agent receive the environment <em>state</em>, $S_t \in \mathcal S$ and select an <em>action</em>,
+$A_t \in \mathcal A(s)$. One time step later, the agent recieve a numerical <em>reward</em>,
+$R_{t+1} \in \mathcal R \subset \mathbb R$ with a new <em>state</em> $S_{t+1}$.</p>
+
+<p><img src="images/agent-environment.png" alt="The agent–environment interaction in a Markov decision process." /></p>
+
+<h2 id="trajectory">Trajectory</h2>
+
+<p>The trajectory is the sequence of state, action and rewards like this :</p>
+
+<p>$$S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, \ldots$$</p>
+
+<h2 id="return">Return</h2>
+
+<p>The return is the sum of rewards and is defined as:</p>
+
+<div>$$\mathit G_t \dot= R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots + R_{T}$$</div>
+
+<p>This approach is valid only for tasks with an actual <em>terminal state</em> $T$, called <em>episodic tasks</em>.</p>
+
+<h2 id="discounted-return">Discounted return</h2>
+
+<p>In case of <em>continuing task</em> (i.e. $T = \infty$) the return $G_t$ could be infinite.
+To make the return finite, we introduce a discount factor $\gamma$ and defining the discounted return:</p>
+
+<div>$$\begin{aligned}
+G_t &\dot= R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \\
+    &\dot= \sum_{k=0}^\infty \gamma^k R_{t+k+1}
+\end{aligned}$$</div>
+
+<p>The return can be slightly modified to take into account both <em>continuing tasks</em> and <em>episodic tasks</em>:</p>
+
+<div>$$G_t \dot= \sum_{k=t+1}^T \gamma^{k-t-1} R_k \\
+\text{with $\mathit T = \infty$ or $\gamma = 1$ but not both.}
+$$</div>
+
+<h2 id="policy">Policy</h2>
+
+<p>A <em>policy</em> is a mapping from states to probability of selecting each possible action.
+We denote $\pi(a|s)$ the probability that $A_t = a \text{ if } S_t = s$
+while following <em>policy</em> $\pi$ at time $t$.</p>
+
+<h2 id="value-functions">Value functions</h2>
+
+<p>The value $v$ represent the total amount of rewards an agent can expect to received in the future.
+The reward is immediate but the value is the expected sum of future rewards.</p>
+
+<h3 id="state-value-function">State-Value function</h3>
+
+<p>The <em>state-value function</em> of a state $s$ under policy $\pi$,
+denoted $v_\pi(s)$, is the expected return when starting in $s$ and following $\pi$ thereafter:</p>
+
+<div>$$v_{\pi}(s) \dot= \mathbb E_{\pi}[G_t | S_t = s]$$</div>
+
+<p>The <em>optimal state-value function</em>, denoted $v_*(s)$ defined as:</p>
+
+<div>$$v_*(s) \dot= \max_\pi v_\pi(s) \text{ , for all } s \in \mathcal S$$</div>
+
+<h3 id="action-value-function">Action-Value function</h3>
+
+<p>The <em>action-value function</em> of taking action $a$ in state $s$ under policy $\pi$,
+denoted $q_\pi(s, a)$, is the expected return when starting from $s$, taking the action $a$,
+and following policy $\pi$ thereafter:</p>
+
+<div>$$q_{\pi}(s,a) \dot= \mathbb E_{\pi}[G_t | S_t = s, A_t = a]$$</div>
+
+<p>The <em>optimal action-value function</em>, denoted $v_*(s)$ defined as:</p>
+
+<div>$$q_*(s, a) \dot= \max_\pi q_\pi(s, a) \text{ , for all } s \in \mathcal S$$</div>
+
+<h3 id="optimal-policy">Optimal policy</h3>
+
+<p>The optimal state-value function or optimal action-value function
+are found for at least one policy called the <em>optimal policy</em> and denoted $\pi_*$.</p>
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    <a class="symbol" href="https://www.github.com/Kissy">
+        <i class="fa fa-github-square"></i>
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Guillaume Le Biller
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        <script src="https://blog.kissy.fr/js/main.js"></script>
+<script src="https://blog.kissy.fr/js/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+  
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-4258818-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: { equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"] }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+
+    MathJax.Hub.Config({
+        
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+</script>
+
+    </body>
+</html>

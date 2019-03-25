@@ -293,8 +293,7 @@ The following attribute types are commonly found in the DN of certificates.</p>
 
         </section>
 
-        <script src="https://blog.kissy.fr/js/jquery-3.3.1.min.js"></script>
-<script src="https://blog.kissy.fr/js/main.js"></script>
+        <script src="https://blog.kissy.fr/js/main.js"></script>
 <script src="https://blog.kissy.fr/js/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
@@ -318,6 +317,35 @@ if (!doNotTrack) {
 
 
 
+
+<script type="text/javascript" async
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$']],
+            processEscapes: true,
+            processEnvironments: true,
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+            TeX: { equationNumbers: { autoNumber: "AMS" },
+                extensions: ["AMSmath.js", "AMSsymbols.js"] }
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        
+        
+        
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i = 0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+
+    MathJax.Hub.Config({
+        
+        TeX: { equationNumbers: { autoNumber: "AMS" } }
+    });
+</script>
 
     </body>
 </html>
