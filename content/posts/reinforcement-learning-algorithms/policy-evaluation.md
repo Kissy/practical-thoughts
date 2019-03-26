@@ -55,5 +55,7 @@ displaying the value function $V(s)$ at each time step $t$ for different input p
 <script type="text/javascript" src="policy-evaluation.js"></script>
 <script type="text/javascript" src="policy-evaluation-frozen-lake.js"></script>
 <script type="text/javascript">
-new PolicyEvaluationFrozenLake(".policy-evaluation-frozen-lake");
+document.addEventListener("DOMContentLoaded", function() {
+    new PolicyEvaluationFrozenLake(".policy-evaluation-frozen-lake");
+});
 </script>
