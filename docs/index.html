@@ -22,24 +22,14 @@
 		
 		<meta name="author" content="Guillaume Le Biller">
 		<meta name="description" content="Any fool can know. The point is to understand.">
-		<meta name="generator" content="Hugo 0.44" />
+		<meta name="generator" content="Hugo 0.54.0" />
 		<title>Practical Thoughts</title>
 		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
-		<link rel="stylesheet" href="https://blog.kissy.fr/css/style.css">
-		<link rel="stylesheet" href="https://blog.kissy.fr/css/highlight.css">
 
 		
-		<script async type="text/javascript">
-            (function() {
-                var css = document.createElement('link');
-                css.href = 'https:\/\/blog.kissy.fr\/css/font-awesome.min.css';
-                css.rel = 'stylesheet';
-                css.type = 'text/css';
-                document.getElementsByTagName('head')[0].appendChild(css);
-            })();
-		</script>
-		
+		<link rel="stylesheet" href="/css/bundle.min.css">
 
+		
 		
 
 		
@@ -78,14 +68,28 @@
     
         
             <li>
+                <aside class="dates">Mar 30</aside>
+                <a href='https://blog.kissy.fr/posts/reinforcement-learning-algorithms/policy-iteration/'>
+                    Policy Iteration on Frozen-Lake
+                    
+                        
+                            <h2>The Policy Iteration algorithm compute iteratively an approximation of the optimal policy $\pi_*$ by calculating the state-value function for a policy, then improving the policy maximizing the state-value function.
+</h2>
+                        
+                    
+                </a>
+            </li>
+        
+    
+    
+        
+            <li>
                 <aside class="dates">Mar 23</aside>
                 <a href='https://blog.kissy.fr/posts/reinforcement-learning-algorithms/policy-evaluation/'>
                     Policy Evaluation on Frozen-Lake
                     
                         
-                            <h2>
-The Policy Evaluation algorithm compute iteratively the state-value function $v_\pi$ for a given policy $\pi$ for a known model in an MDP environment.
-
+                            <h2>The Policy Evaluation algorithm compute iteratively the state-value function $v_\pi$ for a given policy $\pi$ for a known model in an MDP environment.
 </h2>
                         
                     
@@ -102,7 +106,6 @@ The Policy Evaluation algorithm compute iteratively the state-value function $v_
                     
                         
                             <h2>The introduction define the environment and it’s mathematical representation the model. Solving reinforcement learning problems can be done using different algorithms.
-
 </h2>
                         
                     
@@ -120,7 +123,6 @@ The Policy Evaluation algorithm compute iteratively the state-value function $v_
                         
                             <h2>
 Learning by interacting with an environment is how people and animals learns. A computer or an agent can also learn the same way.
-
 </h2>
                         
                     
@@ -137,7 +139,6 @@ Learning by interacting with an environment is how people and animals learns. A 
                     
                         
                             <h2>Creating a self-signed SSL certificate is easy, you can found lots and lots of tutorial on internet. Creating valid, multiple domains, self-signed SSL certificate is another story.
-
 </h2>
                         
                     
@@ -153,21 +154,21 @@ Learning by interacting with an environment is how people and animals learns. A 
         <footer id="footer">
     
         <div id="social">
-
-	
-	
-    <a class="symbol" href="https://www.github.com/Kissy">
-        <i class="fa fa-github-square"></i>
+    
+    <a class="symbol" href="https://www.github.com/Kissy" target="_blank">
+        <img src="https://blog.kissy.fr/images/github-icon.svg" />
     </a>
     
-
-
+    <a class="symbol" href="https://www.linkedin.com/in/guillaume-le-biller-b1b38773/" target="_blank">
+        <img src="https://blog.kissy.fr/images/linkedin-icon.svg" />
+    </a>
+    
 </div>
 
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Guillaume Le Biller
+       © Copyright 2019 | Guillaume Le Biller
     
     </p>
     <p class="small">
@@ -177,16 +178,42 @@ Learning by interacting with an environment is how people and animals learns. A 
 
     </section>
 
-    <script type="text/javascript" async src="https://blog.kissy.fr/js/main.js"></script>
-<script type="text/javascript" async src="https://blog.kissy.fr/js/highlight.min.js">
+    
+<script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2){return;}\nvar images=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(images,function(el,i){var src=el.getAttribute(\"data-2x\");el.setAttribute(\"src\",src);});});"</script>
+
+
+
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+MathJax.Hub.Config({
+    TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js">
     hljs.initHighlightingOnLoad();
 </script>
 
 
-
-
   
-<script>
+<script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -201,36 +228,6 @@ if (!doNotTrack) {
 
 
 
-
-
-<script type="text/javascript" async
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [['$','$'], ['\\(','\\)']],
-            displayMath: [['$$','$$']],
-            processEscapes: true,
-            processEnvironments: true,
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            TeX: { equationNumbers: { autoNumber: "AMS" },
-                extensions: ["AMSmath.js", "AMSsymbols.js"] }
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        
-        
-        
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i = 0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-
-    MathJax.Hub.Config({
-        
-        TeX: { equationNumbers: { autoNumber: "AMS" } }
-    });
-</script>
 
     </body>
 </html>

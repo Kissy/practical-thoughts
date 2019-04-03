@@ -14,13 +14,8 @@
   
   
   <meta name="twitter:title" content="Policy Evaluation on Frozen-Lake"/>
-  <meta name="twitter:description" content="
-
-
-The Policy Evaluation algorithm compute iteratively the state-value function $v_\pi$
-for a given policy $\pi$ for a known model in an MDP environment.
-
-"/>
+  <meta name="twitter:description" content="The Policy Evaluation algorithm compute iteratively the state-value function $v_\pi$
+for a given policy $\pi$ for a known model in an MDP environment."/>
   
   
   
@@ -33,24 +28,19 @@ for a given policy $\pi$ for a known model in an MDP environment.
 		
 		<meta name="author" content="Guillaume Le Biller">
 		<meta name="description" content="Any fool can know. The point is to understand.">
-		<meta name="generator" content="Hugo 0.44" />
+		<meta name="generator" content="Hugo 0.54.0" />
 		<title>Policy Evaluation on Frozen-Lake &middot; Practical Thoughts</title>
 		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
-		<link rel="stylesheet" href="https://blog.kissy.fr/css/style.css">
-		<link rel="stylesheet" href="https://blog.kissy.fr/css/highlight.css">
 
 		
-		<script async type="text/javascript">
-            (function() {
-                var css = document.createElement('link');
-                css.href = 'https:\/\/blog.kissy.fr\/css/font-awesome.min.css';
-                css.rel = 'stylesheet';
-                css.type = 'text/css';
-                document.getElementsByTagName('head')[0].appendChild(css);
-            })();
-		</script>
-		
+		<link rel="stylesheet" href="/css/bundle.min.css">
 
+		
+		
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+			
+			<link rel="stylesheet" href="/posts/reinforcement-learning-algorithms/policy-evaluation/bundle.min.css">
 		
 
 		
@@ -80,7 +70,7 @@ for a given policy $\pi$ for a known model in an MDP environment.
                     </h1>
                     <h2 class="headline">
                     Mar 23, 2019
-                    · 169 words
+                    · 164 words
                     · 1 minute read
                       <span class="tags">
                       
@@ -89,13 +79,8 @@ for a given policy $\pi$ for a known model in an MDP environment.
                 </header>
                 
                 <section id="post-body">
-                    <p><link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<link href="policy-evaluation-frozen-lake.css" rel="stylesheet"></link></p>
-
-<p>The Policy Evaluation algorithm compute iteratively the state-value function $v_\pi$
+                    <p>The Policy Evaluation algorithm compute iteratively the state-value function $v_\pi$
 for a given policy $\pi$ for a known model in an MDP environment.</p>
-
-<p></p>
 
 <h1 id="iterative-algorithm">Iterative algorithm</h1>
 
@@ -103,14 +88,14 @@ for a given policy $\pi$ for a known model in an MDP environment.</p>
 the box below. <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup></p>
 
 <div class="algorithm">
-    <p>Input:</p>
+    <p><b>Input:</b></p>
     <p class="i1">a policy $\pi$ to be evaluated</p>
-    <p>Parameter:</p>
+    <p><b>Parameter:</b></p>
     <p class="i1">a small threshold $\theta > 0$ determining accuracy of estimation</p>
-    <p>Initialize:</p>
-    <p class="i1">$V(s) \text{, for all } S \in S^+$, arbitrarily except that $V(terminal) = 0$</p>
     <br />
-    <p>Loop:</p>
+    <p><b>Initialization:</b></p>
+    <p class="i1">$V(s) \text{, for all } S \in S^+$, arbitrarily except that $V(terminal) = 0$</p>
+    <p><b>Policy Evaluation:</b></p>
     <p class="i1">$\nabla \leftarrow 0$</p>
     <p class="i1">Loop for each $s \in S$:</p>
     <p class="i2">$v \leftarrow V(s)$</p>
@@ -135,15 +120,6 @@ displaying the value function $V(s)$ at each time step $t$ for different input p
 <div style="text-align: right">
 <a href="https://blog.kissy.fr/posts/reinforcement-learning-algorithms/">Table of content</a>
 </div>
-
-<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
-<script type="text/javascript" src="policy-evaluation.js"></script>
-<script type="text/javascript" src="policy-evaluation-frozen-lake.js"></script>
-<script type="text/javascript">
-document.addEventListener("DOMContentLoaded", function() {
-    new PolicyEvaluationFrozenLake(".policy-evaluation-frozen-lake");
-});
-</script>
 <div class="footnotes">
 
 <hr />
@@ -165,21 +141,21 @@ document.addEventListener("DOMContentLoaded", function() {
             <footer id="footer">
     
         <div id="social">
-
-	
-	
-    <a class="symbol" href="https://www.github.com/Kissy">
-        <i class="fa fa-github-square"></i>
+    
+    <a class="symbol" href="https://www.github.com/Kissy" target="_blank">
+        <img src="https://blog.kissy.fr/images/github-icon.svg" />
     </a>
     
-
-
+    <a class="symbol" href="https://www.linkedin.com/in/guillaume-le-biller-b1b38773/" target="_blank">
+        <img src="https://blog.kissy.fr/images/linkedin-icon.svg" />
+    </a>
+    
 </div>
 
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Guillaume Le Biller
+       © Copyright 2019 | Guillaume Le Biller
     
     </p>
     <p class="small">
@@ -189,16 +165,46 @@ document.addEventListener("DOMContentLoaded", function() {
 
         </section>
 
-        <script type="text/javascript" async src="https://blog.kissy.fr/js/main.js"></script>
-<script type="text/javascript" async src="https://blog.kissy.fr/js/highlight.min.js">
+        
+<script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2){return;}\nvar images=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(images,function(el,i){var src=el.getAttribute(\"data-2x\");el.setAttribute(\"src\",src);});});"</script>
+
+
+
+  <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+  
+  <script type="text/javascript" defer src="/posts/reinforcement-learning-algorithms/policy-evaluation/bundle.min.js"></script>
+
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+MathJax.Hub.Config({
+    TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js">
     hljs.initHighlightingOnLoad();
 </script>
 
 
-
-
   
-<script>
+<script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -213,36 +219,6 @@ if (!doNotTrack) {
 
 
 
-
-
-<script type="text/javascript" async
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [['$','$'], ['\\(','\\)']],
-            displayMath: [['$$','$$']],
-            processEscapes: true,
-            processEnvironments: true,
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            TeX: { equationNumbers: { autoNumber: "AMS" },
-                extensions: ["AMSmath.js", "AMSsymbols.js"] }
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        
-        
-        
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i = 0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-
-    MathJax.Hub.Config({
-        
-        TeX: { equationNumbers: { autoNumber: "AMS" } }
-    });
-</script>
 
     </body>
 </html>

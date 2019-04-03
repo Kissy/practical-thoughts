@@ -13,9 +13,9 @@
     
   
   
-  <meta name="twitter:title" content="Reinforcement learning : algorithms"/>
-  <meta name="twitter:description" content="The introduction define the environment and it&rsquo;s mathematical representation the model.
-Solving reinforcement learning problems can be done using different algorithms."/>
+  <meta name="twitter:title" content="Policy Iteration on Frozen-Lake"/>
+  <meta name="twitter:description" content="The Policy Iteration algorithm compute iteratively an approximation of the optimal policy $\pi_*$
+by calculating the state-value function for a policy, then improving the policy maximizing the state-value function."/>
   
   
   
@@ -29,13 +29,18 @@ Solving reinforcement learning problems can be done using different algorithms."
 		<meta name="author" content="Guillaume Le Biller">
 		<meta name="description" content="Any fool can know. The point is to understand.">
 		<meta name="generator" content="Hugo 0.54.0" />
-		<title>Reinforcement learning : algorithms &middot; Practical Thoughts</title>
+		<title>Policy Iteration on Frozen-Lake &middot; Practical Thoughts</title>
 		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
 
 		
 		<link rel="stylesheet" href="/css/bundle.min.css">
 
 		
+		
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+			
+			<link rel="stylesheet" href="/posts/reinforcement-learning-algorithms/policy-iteration/bundle.min.css">
 		
 
 		
@@ -61,11 +66,11 @@ Solving reinforcement learning problems can be done using different algorithms."
             <article>
                 <header>
                     <h1>
-                        Reinforcement learning : algorithms
+                        Policy Iteration on Frozen-Lake
                     </h1>
                     <h2 class="headline">
-                    Mar 23, 2019
-                    · 27 words
+                    Mar 30, 2019
+                    · 206 words
                     · 1 minute read
                       <span class="tags">
                       
@@ -74,14 +79,55 @@ Solving reinforcement learning problems can be done using different algorithms."
                 </header>
                 
                 <section id="post-body">
-                    <p>The <a href="https://blog.kissy.fr/posts/reinforcement-learning-an-introduction/">introduction</a> define the environment and it&rsquo;s mathematical representation the model.
-Solving reinforcement learning problems can be done using different algorithms.</p>
+                    <p>The Policy Iteration algorithm compute iteratively an approximation of the optimal policy $\pi_*$
+by calculating the state-value function for a policy, then improving the policy maximizing the state-value function.</p>
 
-<h1 id="dynamic-programing">Dynamic Programing</h1>
+<h1 id="iterative-algorithm">Iterative algorithm</h1>
 
-<h2 id="policy-evaluation-hahahugoshortcode-0xc000158000-2-hbhb"><a href="https://blog.kissy.fr/posts/reinforcement-learning-algorithms/policy-evaluation/">Policy evaluation</a></h2>
+<p>A complete in-place version of iterative policy iteration is shown in pseudocode in
+the box below. <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup></p>
 
-<h2 id="policy-iteration-hahahugoshortcode-0xc000158000-3-hbhb"><a href="https://blog.kissy.fr/posts/reinforcement-learning-algorithms/policy-iteration/">Policy iteration</a></h2>
+<div class="algorithm">
+    <p><b>Parameter:</b></p>
+    <p class="i1">a small threshold $\theta > 0$ determining accuracy of estimation</p>
+    <br />
+    <p><b>1. Initialization:</b></p>
+    <p class="i1">$V(s) \text{, for all } S \in S^+$, arbitrarily except that $V(terminal) = 0$</p>
+    <p><b>2. Policy Evaluation:</b></p>
+    <p class="i1">$\nabla \leftarrow 0$</p>
+    <p class="i1">Loop for each $s \in S$:</p>
+    <p class="i2">$v \leftarrow V(s)$</p>
+    <p class="i2">$V(s) \leftarrow \sum_{s',r} p(s',r|s, \pi(s))[r + \gamma V(s')]$</p>
+    <p class="i2">$\nabla \leftarrow max(\nabla, |v - V(s)|)$</p>
+    <p>Until $\nabla < 0$</p>
+    <p><b>3. Policy Improvement:</b></p>
+    <p class="i1">$policy\_stable \leftarrow true$</p>
+    <p class="i1">For each $s \in S$</p>
+    <p class="i2">$old-actions \leftarrow \pi(s)$</p>
+    <p class="i2">$\pi(s) \leftarrow argmax_a \sum_{s',r} p(s',r|s,a)[r + \gamma V(s')]$</p>
+    <p class="i2">If $old-action \neq \pi(s)$, then $policy\_stable \leftarrow false$</p>
+    <p class="i1">If $policy\_stable$, then stop and return $V \approx v_* \text{ and } \pi \approx \pi_*$; else go to 2.</p>
+</div>
+
+<h1 id="frozen-lake-https-gym-openai-com-envs-frozenlake-v0-implementation"><a href="https://gym.openai.com/envs/FrozenLake-v0/">Frozen Lake</a> implementation</h1>
+
+<p>The implementation of the Policy Iteration algorithm on the Frozen Lake problem
+displaying the value function $V(s)$ at each time step $t$ starting with a policy with equal probability.</p>
+
+<div class="policy-iteration-frozen-lake"></div>
+
+<div style="text-align: right">
+<a href="https://blog.kissy.fr/posts/reinforcement-learning-algorithms/">Table of content</a>
+</div>
+<div class="footnotes">
+
+<hr />
+
+<ol>
+<li id="fn:1">Sutton, R. S., &amp; Barto, A. G. (2018). <a href="http://www.incompleteideas.net/book/RLbook2018.pdf">4.3 Policy Iteration</a>. In Reinforcement learning: an introduction.
+ <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+</ol>
+</div>
                 </section>
             </article>
 
@@ -122,6 +168,10 @@ Solving reinforcement learning problems can be done using different algorithms.<
 <script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2){return;}\nvar images=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(images,function(el,i){var src=el.getAttribute(\"data-2x\");el.setAttribute(\"src\",src);});});"</script>
 
 
+
+  <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.9.2/d3.min.js"></script>
+  
+  <script type="text/javascript" defer src="/posts/reinforcement-learning-algorithms/policy-iteration/bundle.min.js"></script>
 
 
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">

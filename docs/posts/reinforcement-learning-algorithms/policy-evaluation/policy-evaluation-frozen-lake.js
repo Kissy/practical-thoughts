@@ -8,10 +8,10 @@ var PolicyEvaluationFrozenLake = function (containerClass) {
     };
     this.MODEL = {
         "p": [
-            [0, 1, 1, 0], [0, 1, 1, 1], [0, 1, 1, 1], [0, 0, 1, 1],
-            [1, 1, 1, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0],
-            [1, 1, 1, 0], [1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 0, 0],
-            [0, 0, 0, 0], [1, 1, 0, 1], [1, 1, 0, 1], [0, 0, 0, 0]
+            [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1],
+            [1, 1, 1, 1], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0],
+            [1, 1, 1, 1], [1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 0, 0],
+            [0, 0, 0, 0], [1, 1, 1, 1], [1, 1, 1, 1], [0, 0, 0, 0]
         ],
         "r": [
             0, 0, 0, 0,
@@ -44,7 +44,7 @@ var PolicyEvaluationFrozenLake = function (containerClass) {
     };
 
     this.theta = 0.01;
-    this.gamma = 0.25;
+    this.gamma = 0.75;
     this.step = 0;
 
     this.container = d3.select(containerClass);
@@ -59,14 +59,27 @@ var PolicyEvaluationFrozenLake = function (containerClass) {
         .on("click", this.setRandomPolicy.bind(this));
 
     var timeStepControl = controls.append("div").classed("time-step-control", true);
-    timeStepControl.append("label").text("time step $t$");
+    var timeStepLabel = timeStepControl.append("label").text("time step $t = $ ");
+    this.timeStepValue = timeStepLabel.append("span").text(this.step);
     this.timeStepInput = timeStepControl
         .append("input")
         .attr("type", "range")
         .attr("min", 0)
         .attr("max", this.DISPLAY["maxTimeStep"])
-        .property("value", 0)
+        .property("value", this.step)
         .on("input", this.setTimeStep.bind(this));
+
+    var gammaControl = controls.append("div").classed("gamma-control", true);
+    var gammaLabel = gammaControl.append("label").text("gamma $\\gamma =$ ");
+    this.gammaValue = gammaLabel.append("span").text(this.gamma);
+    this.gammaInput = gammaControl
+        .append("input")
+        .attr("type", "range")
+        .attr("min", 0)
+        .attr("max", 1)
+        .attr("step", 0.05)
+        .property("value", this.gamma)
+        .on("input", this.setGamma.bind(this));
 
     this.container.append("div").classed("frozen-lake-container", true)
         .append("div").classed("frozen-lake", true);
@@ -91,12 +104,13 @@ PolicyEvaluationFrozenLake.prototype.draw = function () {
         .classed("cell", true);
 
     var parentThis = this;
+    var minValue = Math.min.apply(Math, this.valueFunction) || 0;
     var maxValue = Math.max.apply(Math, this.valueFunction) || 1;
     var textColor = d3.scaleQuantize()
-        .domain([0, maxValue])
+        .domain([minValue, maxValue])
         .range([d3.rgb(this.DISPLAY.lowTextColor), d3.rgb(this.DISPLAY.highTextColor)]);
     var backgroundColor = d3.scalePow().exponent(0.5).interpolate(d3.interpolateHcl)
-        .domain([0, maxValue])
+        .domain([minValue, maxValue])
         .range([d3.rgb(this.DISPLAY.lowBackgroundColor), d3.rgb(this.DISPLAY.highBackgroundColor)]);
 
     cells.style("color", textColor).style("background-color", backgroundColor);
@@ -139,6 +153,15 @@ PolicyEvaluationFrozenLake.prototype.getMaterialIconText = function (d, i) {
 
 PolicyEvaluationFrozenLake.prototype.setTimeStep = function () {
     this.step = Number(this.timeStepInput.property("value"));
+    this.timeStepValue.text(this.step);
+    var policyEvaluation = new PolicyEvaluation(this.MODEL, this.policy, this.theta, this.gamma, this.step);
+    this.valueFunction = policyEvaluation.valueFunction;
+    this.draw();
+};
+
+PolicyEvaluationFrozenLake.prototype.setGamma = function () {
+    this.gamma = Number(this.gammaInput.property("value"));
+    this.gammaValue.text(this.gamma);
     var policyEvaluation = new PolicyEvaluation(this.MODEL, this.policy, this.theta, this.gamma, this.step);
     this.valueFunction = policyEvaluation.valueFunction;
     this.draw();
@@ -209,3 +232,7 @@ PolicyEvaluationFrozenLake.prototype.setRandomPolicy = function () {
     this.policy = this.getRandomPolicy();
     this.run();
 };
+
+document.addEventListener("DOMContentLoaded", function() {
+    new PolicyEvaluationFrozenLake(".policy-evaluation-frozen-lake");
+});

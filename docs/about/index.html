@@ -22,24 +22,14 @@
 		
 		<meta name="author" content="Guillaume Le Biller">
 		<meta name="description" content="Any fool can know. The point is to understand.">
-		<meta name="generator" content="Hugo 0.44" />
+		<meta name="generator" content="Hugo 0.54.0" />
 		<title>About &middot; Practical Thoughts</title>
 		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
-		<link rel="stylesheet" href="https://blog.kissy.fr/css/style.css">
-		<link rel="stylesheet" href="https://blog.kissy.fr/css/highlight.css">
 
 		
-		<script async type="text/javascript">
-            (function() {
-                var css = document.createElement('link');
-                css.href = 'https:\/\/blog.kissy.fr\/css/font-awesome.min.css';
-                css.rel = 'stylesheet';
-                css.type = 'text/css';
-                document.getElementsByTagName('head')[0].appendChild(css);
-            })();
-		</script>
-		
+		<link rel="stylesheet" href="/css/bundle.min.css">
 
+		
 		
 
 		
@@ -84,21 +74,21 @@
     <footer id="footer">
     
         <div id="social">
-
-	
-	
-    <a class="symbol" href="https://www.github.com/Kissy">
-        <i class="fa fa-github-square"></i>
+    
+    <a class="symbol" href="https://www.github.com/Kissy" target="_blank">
+        <img src="https://blog.kissy.fr/images/github-icon.svg" />
     </a>
     
-
-
+    <a class="symbol" href="https://www.linkedin.com/in/guillaume-le-biller-b1b38773/" target="_blank">
+        <img src="https://blog.kissy.fr/images/linkedin-icon.svg" />
+    </a>
+    
 </div>
 
     
     <p class="small">
     
-       © Copyright 2019 <i class="fa fa-heart" aria-hidden="true"></i> Guillaume Le Biller
+       © Copyright 2019 | Guillaume Le Biller
     
     </p>
     <p class="small">
@@ -108,16 +98,42 @@
 
 </section>
 
-<script type="text/javascript" async src="https://blog.kissy.fr/js/main.js"></script>
-<script type="text/javascript" async src="https://blog.kissy.fr/js/highlight.min.js">
+
+<script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2){return;}\nvar images=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(images,function(el,i){var src=el.getAttribute(\"data-2x\");el.setAttribute(\"src\",src);});});"</script>
+
+
+
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+MathJax.Hub.Config({
+    TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js">
     hljs.initHighlightingOnLoad();
 </script>
 
 
-
-
   
-<script>
+<script type="application/javascript">
 var doNotTrack = false;
 if (!doNotTrack) {
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -132,35 +148,5 @@ if (!doNotTrack) {
 
 
 
-
-
-<script type="text/javascript" async
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-    MathJax.Hub.Config({
-        tex2jax: {
-            inlineMath: [['$','$'], ['\\(','\\)']],
-            displayMath: [['$$','$$']],
-            processEscapes: true,
-            processEnvironments: true,
-            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-            TeX: { equationNumbers: { autoNumber: "AMS" },
-                extensions: ["AMSmath.js", "AMSsymbols.js"] }
-        }
-    });
-    MathJax.Hub.Queue(function() {
-        
-        
-        
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i = 0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-
-    MathJax.Hub.Config({
-        
-        TeX: { equationNumbers: { autoNumber: "AMS" } }
-    });
-</script>
 
 </body>
