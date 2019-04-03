@@ -10,6 +10,6 @@ Solving reinforcement learning problems can be done using different algorithms.
 
 # Dynamic Programing
 
-## [Policy evaluation]({{< ref "/posts/reinforcement-learning-algorithms/policy-evaluation.md" >}})
+## [Policy evaluation]({{< ref "/posts/reinforcement-learning-algorithms/policy-evaluation/index.md" >}})
+## [Policy iteration]({{< ref "/posts/reinforcement-learning-algorithms/policy-iteration/index.md" >}})
 
-## Policy iteration - In progress

@@ -12,28 +12,19 @@
 		{{ .Hugo.Generator }}
 		<title>{{ if .IsHome }}{{ .Title }}{{ else }}{{ .Title }} &middot; {{ .Site.Title }}{{ end }}</title>
 		<link rel="shortcut icon" href="{{ .Site.BaseURL }}images/favicon.ico">
-		<link rel="stylesheet" href="{{ .Site.BaseURL }}css/style.css">
-		<link rel="stylesheet" href="{{ .Site.BaseURL }}css/highlight.css">
 
-		{{ if eq .Site.Params.iconFont "font-awesome" }}
-		<script async type="text/javascript">
-            (function() {
-                var css = document.createElement('link');
-                css.href = '{{ .Site.BaseURL }}css/font-awesome.min.css';
-                css.rel = 'stylesheet';
-                css.type = 'text/css';
-                document.getElementsByTagName('head')[0].appendChild(css);
-            })();
-		</script>
-		{{ else }}
-		<link rel="stylesheet" href="{{ .Site.BaseURL }}css/monosocialiconsfont.css">
+		{{ $cssBundle := slice (resources.Get "css/style.css") (resources.Get "css/highlight.css") | resources.Concat "css/bundle.css" | resources.Minify }}
+		<link rel="stylesheet" href="{{ $cssBundle.RelPermalink }}">
+
+		{{ $pageCss := .Resources.Match "**.css" }}
+		{{ if $pageCss }}
+			<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+			{{ $pageCssBundle := $pageCss | resources.Concat (print .Dir "bundle.css") | resources.Minify }}
+			<link rel="stylesheet" href="{{ $pageCssBundle.RelPermalink }}">
 		{{ end }}
 
 		{{ if .Site.Params.enableRSS }}
 		<link href="{{ .Site.RSSLink }}" rel="alternate" type="application/rss+xml" title="{{ .Site.Title }}" />
-		{{ end }}
-
-		{{ range .Site.Params.customCSS }}
-		<link rel="stylesheet" href="{{ $.Site.BaseURL }}{{ . }}">
 		{{ end }}
 	</head>

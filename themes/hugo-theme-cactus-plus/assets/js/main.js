@@ -1,5 +1,4 @@
 // To make images retina, add a "data-2x" attribute to the img element
-
 document.addEventListener("DOMContentLoaded", function() {
 	if (window.devicePixelRatio !== 2) {
 		return;

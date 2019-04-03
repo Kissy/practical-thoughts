@@ -27,16 +27,10 @@ publishDir = "docs"
     enableSummary = true
     useDescriptionReplaceSummary = false
 
-
     enableGoogleAnalytics = true
-    enableBaiduAnalytics = false
-    baiduAnalytics = 'your_baidu_analysis_code'
 
     enableTwitterCard = true
     twitterCardImage = ""
-
-    customCSS = []
-    customJS  = []
 
     # Navigation links
     home = ""
@@ -58,10 +52,6 @@ publishDir = "docs"
     title404 = ""
     subtitle404 = ""
 
-    iconFont = "font-awesome"
-
-    socialIconStyle = ""
-
-
 [social]
-	github-square = "https://www.github.com/Kissy"
+	github = "https://www.github.com/Kissy"
+	linkedin = "https://www.linkedin.com/in/guillaume-le-biller-b1b38773/"
