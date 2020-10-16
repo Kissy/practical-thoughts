@@ -28,7 +28,7 @@ for a given policy $\pi$ for a known model in an MDP environment."/>
 		
 		<meta name="author" content="Guillaume Le Biller">
 		<meta name="description" content="Any fool can know. The point is to understand.">
-		<meta name="generator" content="Hugo 0.54.0" />
+		<meta name="generator" content="Hugo 0.69.2" />
 		<title>Policy Evaluation on Frozen-Lake &middot; Practical Thoughts</title>
 		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
 
@@ -70,7 +70,7 @@ for a given policy $\pi$ for a known model in an MDP environment."/>
                     </h1>
                     <h2 class="headline">
                     Mar 23, 2019
-                    · 164 words
+                    · 98 words
                     · 1 minute read
                       <span class="tags">
                       
@@ -81,54 +81,28 @@ for a given policy $\pi$ for a known model in an MDP environment."/>
                 <section id="post-body">
                     <p>The Policy Evaluation algorithm compute iteratively the state-value function $v_\pi$
 for a given policy $\pi$ for a known model in an MDP environment.</p>
-
 <h1 id="iterative-algorithm">Iterative algorithm</h1>
-
 <p>A complete in-place version of iterative policy evaluation is shown in pseudocode in
-the box below. <sup class="footnote-ref" id="fnref:1"><a href="#fn:1">1</a></sup></p>
-
-<div class="algorithm">
-    <p><b>Input:</b></p>
-    <p class="i1">a policy $\pi$ to be evaluated</p>
-    <p><b>Parameter:</b></p>
-    <p class="i1">a small threshold $\theta > 0$ determining accuracy of estimation</p>
-    <br />
-    <p><b>Initialization:</b></p>
-    <p class="i1">$V(s) \text{, for all } S \in S^+$, arbitrarily except that $V(terminal) = 0$</p>
-    <p><b>Policy Evaluation:</b></p>
-    <p class="i1">$\nabla \leftarrow 0$</p>
-    <p class="i1">Loop for each $s \in S$:</p>
-    <p class="i2">$v \leftarrow V(s)$</p>
-    <p class="i2">$V(s) \leftarrow \sum_a \pi(a|s) \sum_{s',r} p(s',r|s,a)[r + \gamma V(s')]$</p>
-    <p class="i2">$\nabla \leftarrow max(\nabla, |v - V(s)|)$</p>
-    <p>Until $\nabla < 0$</p>
-</div>
-
-<h1 id="frozen-lake-https-gym-openai-com-envs-frozenlake-v0-implementation"><a href="https://gym.openai.com/envs/FrozenLake-v0/">Frozen Lake</a> implementation</h1>
-
+the box below. <sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup></p>
+<!-- raw HTML omitted -->
+<h1 id="frozen-lakehttpsgymopenaicomenvsfrozenlake-v0-implementation"><a href="https://gym.openai.com/envs/FrozenLake-v0/">Frozen Lake</a> implementation</h1>
 <p>The implementation of the Policy Evaluation algorithm on the Frozen Lake problem
 displaying the value function $V(s)$ at each time step $t$ for different input policies:</p>
-
 <ul>
 <li>Optimal Policy — $v_*$</li>
 <li>Policy with equal probability</li>
 <li>Random policy</li>
 </ul>
-
-<div class="policy-evaluation-frozen-lake"></div>
-
-<div style="text-align: right">
-<a href="https://blog.kissy.fr/posts/reinforcement-learning-algorithms/">Table of content</a>
-</div>
-<div class="footnotes">
-
-<hr />
-
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<section class="footnotes" role="doc-endnotes">
+<hr>
 <ol>
-<li id="fn:1">Sutton, R. S., &amp; Barto, A. G. (2018). <a href="http://www.incompleteideas.net/book/RLbook2018.pdf">4.1 Policy Evaluation</a>. In Reinforcement learning: an introduction.
- <a class="footnote-return" href="#fnref:1"><sup>[return]</sup></a></li>
+<li id="fn:1" role="doc-endnote">
+<p>Sutton, R. S., &amp; Barto, A. G. (2018). <a href="http://www.incompleteideas.net/book/RLbook2018.pdf">4.1 Policy Evaluation</a>. In Reinforcement learning: an introduction. <a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
 </ol>
-</div>
+</section>
                 </section>
             </article>
 
@@ -155,7 +129,7 @@ displaying the value function $V(s)$ at each time step $t$ for different input p
     
     <p class="small">
     
-       © Copyright 2019 | Guillaume Le Biller
+       © Copyright 2020 | Guillaume Le Biller
     
     </p>
     <p class="small">

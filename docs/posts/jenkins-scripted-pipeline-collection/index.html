@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="https://blog.kissy.fr/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="Jenkins — Scripted Pipeline collection"/>
+  <meta name="twitter:description" content="Curated list of useful Jenkins Scripted Pipeline patterns as a complement to
+the official pipeline-example git repository."/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@Guillaume Le Biller"/>
+  
+
+
+
+		
+		<meta name="author" content="Guillaume Le Biller">
+		<meta name="description" content="Any fool can know. The point is to understand.">
+		<meta name="generator" content="Hugo 0.69.2" />
+		<title>Jenkins — Scripted Pipeline collection &middot; Practical Thoughts</title>
+		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
+
+		
+		<link rel="stylesheet" href="/css/bundle.min.css">
+
+		
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://blog.kissy.fr/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://blog.kissy.fr/posts'>Archive</a>
+	<a href='https://blog.kissy.fr/tags'>Tags</a>
+	<a href='https://blog.kissy.fr/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Jenkins — Scripted Pipeline collection
+                    </h1>
+                    <h2 class="headline">
+                    Oct 11, 2020
+                    · 148 words
+                    · 1 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                <section id="post-body">
+                    <p>Curated list of useful Jenkins Scripted Pipeline patterns as a complement to
+the official <a href="https://github.com/jenkinsci/pipeline-examples">pipeline-example</a> git repository.</p>
+<h1 id="executor-label">Executor label</h1>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">node<span style="color:#666">(</span><span style="color:#4070a0">&#39;label&#39;</span><span style="color:#666">)</span> <span style="color:#666">{</span>
+    sh <span style="color:#4070a0">&#39;running-on-executor-with-label&#39;</span>
+<span style="color:#666">}</span></code></pre></div>
+<h1 id="update-github-commit--status-checkshttpsdocsgithubcomenfree-pro-teamlatestgithubcollaborating-with-issues-and-pull-requestsabout-status-checks">Update Github commit  <a href="https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/about-status-checks">status checks</a></h1>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">node <span style="color:#666">{</span>
+    step<span style="color:#666">([</span>
+        $class<span style="color:#666">:</span> <span style="color:#4070a0">&#39;GitHubCommitStatusSetter&#39;</span><span style="color:#666">,</span>
+        <span style="color:#002070;font-weight:bold">contextSource:</span> <span style="color:#666">[</span>$class<span style="color:#666">:</span> <span style="color:#4070a0">&#39;ManuallyEnteredCommitContextSource&#39;</span><span style="color:#666">,</span> <span style="color:#002070;font-weight:bold">context:</span> <span style="color:#4070a0">&#34;Checkstyle&#34;</span><span style="color:#666">],</span>
+        <span style="color:#002070;font-weight:bold">statusResultSource:</span> <span style="color:#666">[</span>$class<span style="color:#666">:</span> <span style="color:#4070a0">&#39;ConditionalStatusResultSource&#39;</span><span style="color:#666">,</span> <span style="color:#002070;font-weight:bold">results:</span> <span style="color:#666">[</span>
+                <span style="color:#666">[</span>$class<span style="color:#666">:</span> <span style="color:#4070a0">&#34;AnyBuildResult&#34;</span><span style="color:#666">,</span> 
+                    <span style="color:#002070;font-weight:bold">message:</span> <span style="color:#4070a0">&#34;Build ${BUILD_DISPLAY_NAME}&#34;</span><span style="color:#666">,</span> 
+                    <span style="color:#002070;font-weight:bold">state:</span> <span style="color:#4070a0">&#39;SUCCESS&#39;</span><span style="color:#666">]</span>
+            <span style="color:#666">]</span>
+        <span style="color:#666">]</span>
+    <span style="color:#666">])</span>
+<span style="color:#666">}</span></code></pre></div>
+<h1 id="per-steps-status-handlers">Per-steps status handlers</h1>
+<p>Notifying a third-party service (i.e. Github) based on a single step or stage result.</p>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">node <span style="color:#666">{</span>
+    stage_success <span style="color:#666">=</span> <span style="color:#007020;font-weight:bold">false</span>
+
+    catchError<span style="color:#666">(</span><span style="color:#002070;font-weight:bold">buildResult:</span> <span style="color:#4070a0">&#39;UNSTABLE&#39;</span><span style="color:#666">,</span> <span style="color:#002070;font-weight:bold">stageResult:</span> <span style="color:#4070a0">&#39;FAILURE&#39;</span><span style="color:#666">)</span> <span style="color:#666">{</span>
+        sh <span style="color:#4070a0">&#39;command-that-may-fail&#39;</span>
+        sh <span style="color:#4070a0">&#39;update-stage-status-to-success&#39;</span>
+        success <span style="color:#666">=</span> <span style="color:#007020;font-weight:bold">true</span>
+    <span style="color:#666">}</span>
+
+    <span style="color:#007020;font-weight:bold">if</span> <span style="color:#666">(!</span>stage_success<span style="color:#666">)</span> <span style="color:#666">{</span>
+        sh <span style="color:#4070a0">&#39;update-stage-status-to-failure&#39;</span>
+    <span style="color:#666">}</span>
+<span style="color:#666">}</span></code></pre></div>
+<p>Using <code>catchError</code> allow to correctly set the build &amp; stage results
+while still allowing to update third-party service status.</p>
+<h1 id="run-steps-inside-container">Run steps inside container</h1>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">node <span style="color:#666">{</span>
+    withDockerContainer<span style="color:#666">(</span><span style="color:#4070a0">&#39;busybox&#39;</span><span style="color:#666">)</span> <span style="color:#666">{</span>
+        sh <span style="color:#4070a0">&#39;ls&#39;</span>
+    <span style="color:#666">}</span>
+<span style="color:#666">}</span></code></pre></div>
+<h1 id="run-docker-command-inside-container">Run docker command inside container</h1>
+<div class="highlight"><pre style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-groovy" data-lang="groovy">node <span style="color:#666">{</span>
+    withDockerContainer<span style="color:#666">(</span><span style="color:#002070;font-weight:bold">args:</span> <span style="color:#4070a0">&#39;-u root -v /var/run/docker.sock:/var/run/docker.sock&#39;</span><span style="color:#666">,</span> <span style="color:#002070;font-weight:bold">image:</span> <span style="color:#4070a0">&#39;docker&#39;</span><span style="color:#666">)</span> <span style="color:#666">{</span>
+        sh <span style="color:#4070a0">&#39;docker ps&#39;</span>
+    <span style="color:#666">}</span>
+<span style="color:#666">}</span></code></pre></div>
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+    
+    <a class="symbol" href="https://www.github.com/Kissy" target="_blank">
+        <img src="https://blog.kissy.fr/images/github-icon.svg" />
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/guillaume-le-biller-b1b38773/" target="_blank">
+        <img src="https://blog.kissy.fr/images/linkedin-icon.svg" />
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2020 | Guillaume Le Biller
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        
+<script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2){return;}\nvar images=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(images,function(el,i){var src=el.getAttribute(\"data-2x\");el.setAttribute(\"src\",src);});});"</script>
+
+
+
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+MathJax.Hub.Config({
+    TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js">
+    hljs.initHighlightingOnLoad();
+</script>
+
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-4258818-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>

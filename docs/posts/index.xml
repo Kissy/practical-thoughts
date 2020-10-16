@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Practical Thoughts</title>
@@ -6,10 +6,20 @@
     <description>Recent content in Posts on Practical Thoughts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Sat, 30 Mar 2019 00:00:00 +0200</lastBuildDate>
+    <lastBuildDate>Sun, 11 Oct 2020 00:00:00 +0200</lastBuildDate>
     
 	<atom:link href="https://blog.kissy.fr/posts/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Jenkins — Scripted Pipeline collection</title>
+      <link>https://blog.kissy.fr/posts/jenkins-scripted-pipeline-collection/</link>
+      <pubDate>Sun, 11 Oct 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://blog.kissy.fr/posts/jenkins-scripted-pipeline-collection/</guid>
+      <description>&lt;p&gt;Curated list of useful Jenkins Scripted Pipeline patterns as a complement to
+the official &lt;a href=&#34;https://github.com/jenkinsci/pipeline-examples&#34;&gt;pipeline-example&lt;/a&gt; git repository.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Policy Iteration on Frozen-Lake</title>
@@ -47,9 +57,7 @@ Solving reinforcement learning problems can be done using different algorithms.&
       <pubDate>Mon, 11 Mar 2019 00:00:00 +0200</pubDate>
       
       <guid>https://blog.kissy.fr/posts/reinforcement-learning-an-introduction/</guid>
-      <description>&lt;p&gt;&lt;link href=&#34;https://fonts.googleapis.com/icon?family=Material+Icons&#34; rel=&#34;stylesheet&#34;&gt;
-&lt;link href=&#34;policy-evaluation-demo.css&#34; rel=&#34;stylesheet&#34;&gt;&lt;/link&gt;&lt;/p&gt;
-
+      <description>&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;Learning by interacting with an environment is how people and animals learns.
 A computer or an agent can also learn the same way.&lt;/p&gt;</description>
     </item>
