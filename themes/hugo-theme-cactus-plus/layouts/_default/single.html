@@ -23,7 +23,7 @@
                       </span>
                     </h2>
                 </header>
-                {{ if .Site.Params.enableToc }}
+                {{ if or (.Site.Params.enableToc) (.Params.enableToc) }}
                   {{ if .TableOfContents }}
                     <div id="toc">
                       {{ .TableOfContents }}

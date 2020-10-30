@@ -959,3 +959,7 @@ code.has-jax {
 .algorithm p.i3 {
     padding-left: 48px;
 }
+
+.float-left {
+    float: left;
+}

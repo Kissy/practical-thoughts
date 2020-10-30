@@ -18,6 +18,11 @@
   </url>
   
   <url>
+    <loc>https://blog.kissy.fr/posts/containers-best-practices/</loc>
+    <lastmod>2020-05-10T00:00:00+02:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://blog.kissy.fr/posts/reinforcement-learning-algorithms/policy-iteration/</loc>
     <lastmod>2019-03-30T00:00:00+02:00</lastmod>
   </url>

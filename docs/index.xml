@@ -12,13 +12,23 @@
     
     
     <item>
-      <title>Jenkins — Scripted Pipeline collection</title>
+      <title>Jenkins Scripted Pipeline collection</title>
       <link>https://blog.kissy.fr/posts/jenkins-scripted-pipeline-collection/</link>
       <pubDate>Sun, 11 Oct 2020 00:00:00 +0200</pubDate>
       
       <guid>https://blog.kissy.fr/posts/jenkins-scripted-pipeline-collection/</guid>
       <description>&lt;p&gt;Curated list of useful Jenkins Scripted Pipeline patterns as a complement to
 the official &lt;a href=&#34;https://github.com/jenkinsci/pipeline-examples&#34;&gt;pipeline-example&lt;/a&gt; git repository.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Containers best practices</title>
+      <link>https://blog.kissy.fr/posts/containers-best-practices/</link>
+      <pubDate>Sun, 10 May 2020 00:00:00 +0200</pubDate>
+      
+      <guid>https://blog.kissy.fr/posts/containers-best-practices/</guid>
+      <description>&lt;p&gt;A curated checklist of best practices and security requirements to help running
+container in production.&lt;/p&gt;</description>
     </item>
     
     <item>

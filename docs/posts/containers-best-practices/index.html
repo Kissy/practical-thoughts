@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="https://blog.kissy.fr/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="Containers best practices"/>
+  <meta name="twitter:description" content="A curated checklist of best practices and security requirements to help running
+container in production."/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@Guillaume Le Biller"/>
+  
+
+
+
+		
+		<meta name="author" content="Guillaume Le Biller">
+		<meta name="description" content="Any fool can know. The point is to understand.">
+		<meta name="generator" content="Hugo 0.69.2" />
+		<title>Containers best practices &middot; Practical Thoughts</title>
+		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
+
+		
+		<link rel="stylesheet" href="/css/bundle.min.css">
+
+		
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://blog.kissy.fr/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://blog.kissy.fr/posts'>Archive</a>
+	<a href='https://blog.kissy.fr/tags'>Tags</a>
+	<a href='https://blog.kissy.fr/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Containers best practices
+                    </h1>
+                    <h2 class="headline">
+                    May 10, 2020
+                    · 755 words
+                    · 4 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-applications-configuration">1. Applications configuration</a>
+      <ul>
+        <li><a href="#11-expose-a-liveness-probe">1.1 Expose a liveness probe</a></li>
+        <li><a href="#12-expose-a-readiness-probe">1.2 Expose a readiness probe</a></li>
+        <li><a href="#13-crash-on-fatal-error">1.3 Crash on fatal error</a></li>
+        <li><a href="#14-efficient-centralized-logging">1.4 Efficient centralized logging</a></li>
+        <li><a href="#15-work-in-a-load-balanced-environment">1.5 Work in a load balanced environment</a></li>
+        <li><a href="#16-avoid-writing-state-in-local-filesystem">1.6 Avoid writing state in local filesystem</a></li>
+      </ul>
+    </li>
+    <li><a href="#2-images-configuration">2. Images configuration</a>
+      <ul>
+        <li><a href="#21-images-must-externalise-configuration">2.1 Images must externalise configuration</a></li>
+        <li><a href="#22-separate-sensitive-configuration">2.2 Separate sensitive configuration</a></li>
+        <li><a href="#23-base-images-should-be-verified-and-reviewed">2.3 Base images should be verified and reviewed</a></li>
+        <li><a href="#24-process-must-run-with-a-dedicated-user">2.4 Process must run with a dedicated user</a></li>
+        <li><a href="#25-images-must-run-a-single-process">2.5 Images must run a single process</a></li>
+        <li><a href="#26-installed-package-must-be-the-minimal-required">2.6 Installed package must be the minimal required</a></li>
+        <li><a href="#27-images-must-be-rebuilt-to-include-security-patches">2.7 Images must be rebuilt to include security patches</a></li>
+      </ul>
+    </li>
+    <li><a href="#3-containers-configuration">3. Containers configuration</a>
+      <ul>
+        <li><a href="#31-configure-memory-limits">3.1 Configure memory limits</a></li>
+        <li><a href="#32-containers-must-have-cpu-priority">3.2 Containers must have CPU priority</a></li>
+        <li><a href="#33-containers-must-not-use-privileged-mode">3.3 Containers must not use <code>privileged</code> mode</a></li>
+        <li><a href="#34-containers-must-run-with-right-capabilities">3.4 Containers must run with right capabilities</a></li>
+        <li><a href="#35-containers-must-run-with-a-dedicated-user">3.5 Containers must run with a dedicated user</a></li>
+        <li><a href="#36-store-state-and-data-outside-of-container">3.6 Store state and data outside of container</a></li>
+        <li><a href="#37-containers-may-run-with-read-only-filesystem">3.7 Containers may run with <code>read-only</code> filesystem</a></li>
+        <li><a href="#38-limit-the-on-failure-restart-policy">3.8 Limit the <code>on-failure</code> restart policy</a></li>
+        <li><a href="#39-containers-should-have-metadata">3.9 Containers should have metadata</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    <p>A curated checklist of best practices and security requirements to help running
+container in production.</p>
+<h2 id="1-applications-configuration">1. Applications configuration</h2>
+<p>The first part is focused on good practices to write container-ready application.</p>
+<h3 id="11-expose-a-liveness-probe">1.1 Expose a liveness probe</h3>
+<p>The liveness probe should always return success to indicate the application is running.
+Dependent third party services like database or APIs are not monitoring in the liveness probe but in the readiness probe.</p>
+<p><em>Slow starting application are handled using startup period delay mechanism.</em></p>
+<h3 id="12-expose-a-readiness-probe">1.2 Expose a readiness probe</h3>
+<p>The readiness probe monitor required third party services and indicate if the application is able to process requests or note.
+A failing dependent service must not crash the application, but mark the readiness probe as down and periodically retries checking the failing service.</p>
+<p><em>Readiness and liveness probes should be different.</em></p>
+<h3 id="13-crash-on-fatal-error">1.3 Crash on fatal error</h3>
+<p>Unrecoverable errors must led to application crash and exit the process.
+Do not use liveness probe to signal crashing application.</p>
+<h3 id="14-efficient-centralized-logging">1.4 Efficient centralized logging</h3>
+<p>The best practice is <em>passive logging</em> where the application is unaware of the logging infrastructure and write logs to <code>stdout</code> and <code>stderr</code>.</p>
+<p>The second option is <em>active logging</em> where the application directly sends logs into a logs aggregator service.</p>
+<h3 id="15-work-in-a-load-balanced-environment">1.5 Work in a load balanced environment</h3>
+<p>All applications must be deployed more than once to increase fault tolerance.</p>
+<h3 id="16-avoid-writing-state-in-local-filesystem">1.6 Avoid writing state in local filesystem</h3>
+<p>Prefer using external services like database or external filesystem.<br>
+If filesystem access is required, follow the container best practice using persistent volume.</p>
+<h2 id="2-images-configuration">2. Images configuration</h2>
+<p>The second part tackle the container image build &amp; best practice.</p>
+<h3 id="21-images-must-externalise-configuration">2.1 Images must externalise configuration</h3>
+<p>Non-sensitive configuration must be stored externally to handle multiple environment without having to rebuild an image.</p>
+<h3 id="22-separate-sensitive-configuration">2.2 Separate sensitive configuration</h3>
+<p>Sensitive configuration must be stored externally and separate from non-sensitive configuration.<br>
+<em>Mount sensitive configuration into volume and do not use Environment Variables.</em></p>
+<h3 id="23-base-images-should-be-verified-and-reviewed">2.3 Base images should be verified and reviewed</h3>
+<p>Ensure that the container image is written either from scratch or is based on another established and trusted base image downloaded over a secure channel.</p>
+<h3 id="24-process-must-run-with-a-dedicated-user">2.4 Process must run with a dedicated user</h3>
+<p>Dockerfile must contain the <code>USER username</code> instruction.</p>
+<h3 id="25-images-must-run-a-single-process">2.5 Images must run a single process</h3>
+<p>If a service requires multiple process use container linking or the sidecar pattern.</p>
+<h3 id="26-installed-package-must-be-the-minimal-required">2.6 Installed package must be the minimal required</h3>
+<p>Do not install anything that does not justify the purpose of container.</p>
+<h3 id="27-images-must-be-rebuilt-to-include-security-patches">2.7 Images must be rebuilt to include security patches</h3>
+<p>Evaluate available security patches and rebuilt all images impacted.</p>
+<h2 id="3-containers-configuration">3. Containers configuration</h2>
+<p>Once our application and our image are well-tailored, the runtime is the last important part.</p>
+<h3 id="31-configure-memory-limits">3.1 Configure memory limits</h3>
+<p>Use host resource management capabilities to control containers memory usage.</p>
+<h3 id="32-containers-must-have-cpu-priority">3.2 Containers must have CPU priority</h3>
+<p>Use host resource management capabilities to control containers resource usage.</p>
+<h3 id="33-containers-must-not-use-privileged-mode">3.3 Containers must not use <code>privileged</code> mode</h3>
+<p>Giving container only restricted access to resources on the host system to increase security.</p>
+<h3 id="34-containers-must-run-with-right-capabilities">3.4 Containers must run with right capabilities</h3>
+<p>Docker gives by default the following capabilities: <code>AUDIT_WRITE</code>, <code>CHOWN</code>, <code>DAC_OVERRIDE</code>, <code>FOWNER</code>, <code>FSETID</code>, <code>KILL</code>, <code>MKNOD</code>, <code>NET_BIND_SERVICE</code>, <code>NET_RAW</code>, <code>SETFCAP</code>, <code>SETGID</code>, <code>SETPCAP</code>, <code>SETUID</code>, <code>SYS_CHROOT</code>.<br>
+Always run a container disabling all capabilities and activating only the one required by the application.</p>
+<p>One capability that could be useful is <code>NET_BIND_SERVICE</code> as it is required to bind a port below 1024 inside a container.
+Enable this capability only when the binding port cannot be changed to a higher value.</p>
+<h3 id="35-containers-must-run-with-a-dedicated-user">3.5 Containers must run with a dedicated user</h3>
+<p>Running containers with unprivileged, non-root users is the best way to prevent privilege escalation attacks.</p>
+<h3 id="36-store-state-and-data-outside-of-container">3.6 Store state and data outside of container</h3>
+<p>To avoid inconsistent data between instances, any persistent information should be saved in a central place outside of the container.</p>
+<h3 id="37-containers-may-run-with-read-only-filesystem">3.7 Containers may run with <code>read-only</code> filesystem</h3>
+<p>If a container is totally immutable, run the container with a read-only filesystem.</p>
+<h3 id="38-limit-the-on-failure-restart-policy">3.8 Limit the <code>on-failure</code> restart policy</h3>
+<p>Prevent indefinitely restarting containers by using a fixed restart policy.</p>
+<h3 id="39-containers-should-have-metadata">3.9 Containers should have metadata</h3>
+<p>Business, technical &amp; security labels will help querying monitoring tools for troubleshooting and analysis.
+Recommended labels:</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Application</td>
+<td>The name of the application</td>
+<td>postgres</td>
+</tr>
+<tr>
+<td>Instance</td>
+<td>A unique ID identifying the instance of an application</td>
+<td>postgres-xyz</td>
+</tr>
+<tr>
+<td>Version</td>
+<td>The current version of the application (e.g., a semantic version, revision hash, etc.)</td>
+<td>12.4</td>
+</tr>
+<tr>
+<td>Component</td>
+<td>The component within the architecture</td>
+<td>database</td>
+</tr>
+<tr>
+<td>Stack</td>
+<td>The name of the higher business application</td>
+<td>checkout</td>
+</tr>
+<tr>
+<td>Managed</td>
+<td>The tool being used to deploy or manage the application</td>
+<td>helm</td>
+</tr>
+<tr>
+<td>Owner</td>
+<td>The team owning the application</td>
+<td>ecommerce</td>
+</tr>
+<tr>
+<td>Data Category</td>
+<td>Data confidentiality level</td>
+<td>sensitive</td>
+</tr>
+<tr>
+<td>Compliance</td>
+<td>Specific compliance requirements</td>
+<td>pci-store</td>
+</tr>
+</tbody>
+</table>
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+    
+    <a class="symbol" href="https://www.github.com/Kissy" target="_blank">
+        <img src="https://blog.kissy.fr/images/github-icon.svg" />
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/guillaume-le-biller-b1b38773/" target="_blank">
+        <img src="https://blog.kissy.fr/images/linkedin-icon.svg" />
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2020 | Guillaume Le Biller
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        
+<script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2){return;}\nvar images=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(images,function(el,i){var src=el.getAttribute(\"data-2x\");el.setAttribute(\"src\",src);});});"</script>
+
+
+
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+MathJax.Hub.Config({
+    TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js">
+    hljs.initHighlightingOnLoad();
+</script>
+
+
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-4258818-9', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+
+
+
+    </body>
+</html>
