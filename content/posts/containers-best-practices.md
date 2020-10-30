@@ -81,6 +81,17 @@ Do not install anything that does not justify the purpose of container.
 
 Evaluate available security patches and rebuilt all images impacted.
 
+### 2.8 Run at least JRE 11+
+
+Container support has been improved at JRE version 11 and above.
+
+### 2.9 Configure JVM flags
+
+Use the following JVM flags when running Java inside a container:  
+`-XX:+UseContainerSupport -XX:MaxRAMPercentage=X -XX:MaxRAMPercentage=X -XX:InitialRAMPercentage=X -XX:+UseG1GC -XshowSettings:vm`.
+  
+_Configure specific options using the dedicated `JAVA_TOOL_OPTIONS` environment varaible._
+
 ## 3. Containers configuration
 
 Once our application and our image are well-tailored, the runtime is the last important part.

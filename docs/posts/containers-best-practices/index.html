@@ -65,7 +65,7 @@ container in production."/>
                     </h1>
                     <h2 class="headline">
                     May 10, 2020
-                    · 755 words
+                    · 802 words
                     · 4 minute read
                       <span class="tags">
                       
@@ -96,6 +96,8 @@ container in production."/>
         <li><a href="#25-images-must-run-a-single-process">2.5 Images must run a single process</a></li>
         <li><a href="#26-installed-package-must-be-the-minimal-required">2.6 Installed package must be the minimal required</a></li>
         <li><a href="#27-images-must-be-rebuilt-to-include-security-patches">2.7 Images must be rebuilt to include security patches</a></li>
+        <li><a href="#28-run-at-least-jre-11">2.8 Run at least JRE 11+</a></li>
+        <li><a href="#29-configure-jvm-flags">2.9 Configure JVM flags</a></li>
       </ul>
     </li>
     <li><a href="#3-containers-configuration">3. Containers configuration</a>
@@ -157,6 +159,12 @@ If filesystem access is required, follow the container best practice using persi
 <p>Do not install anything that does not justify the purpose of container.</p>
 <h3 id="27-images-must-be-rebuilt-to-include-security-patches">2.7 Images must be rebuilt to include security patches</h3>
 <p>Evaluate available security patches and rebuilt all images impacted.</p>
+<h3 id="28-run-at-least-jre-11">2.8 Run at least JRE 11+</h3>
+<p>Container support has been improved at JRE version 11 and above.</p>
+<h3 id="29-configure-jvm-flags">2.9 Configure JVM flags</h3>
+<p>Use the following JVM flags when running Java inside a container:<br>
+<code>-XX:+UseContainerSupport -XX:MaxRAMPercentage=X -XX:MaxRAMPercentage=X -XX:InitialRAMPercentage=X -XX:+UseG1GC -XshowSettings:vm</code>.</p>
+<p><em>Configure specific options using the dedicated <code>JAVA_TOOL_OPTIONS</code> environment varaible.</em></p>
 <h2 id="3-containers-configuration">3. Containers configuration</h2>
 <p>Once our application and our image are well-tailored, the runtime is the last important part.</p>
 <h3 id="31-configure-memory-limits">3.1 Configure memory limits</h3>
