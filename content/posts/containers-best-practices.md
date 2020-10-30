@@ -16,26 +16,27 @@ The first part is focused on good practices to write container-ready application
 
 ### 1.1 Expose a liveness probe
 
-The liveness probe should always return success to indicate the application is running.
-Dependent third party services like database or APIs are not monitoring in the liveness probe but in the readiness probe.  
+The liveness probe should always return success to indicate the application is running.[^1]
+Third party services like database or REST APIs are not monitored in the liveness probe but are handled in the readiness probe.   
   
 _Slow starting application are handled using startup period delay mechanism._
 
 ### 1.2 Expose a readiness probe
 
 The readiness probe monitor required third party services and indicate if the application is able to process requests or note.
-A failing dependent service must not crash the application, but mark the readiness probe as down and periodically retries checking the failing service.  
+A failing dependent service must not crash the application, but mark the readiness probe as down and periodically retries checking the failing service.[^2]  
   
-_Readiness and liveness probes should be different._
+_Readiness and liveness probes should be different.[^3]_
 
 ### 1.3 Crash on fatal error
 
 Unrecoverable errors must led to application crash and exit the process.
 Do not use liveness probe to signal crashing application.
 
-### 1.4 Efficient centralized logging
+### 1.4 Efficient centralised logging
 
-The best practice is _passive logging_ where the application is unaware of the logging infrastructure and write logs to `stdout` and `stderr`.  
+The best practice is _passive logging_ where the application is unaware of the logging infrastructure and write logs to `stdout` and `stderr`.[^4]
+The infrastructure will be in charge of forwarding the logs to an external service.  
   
 The second option is _active logging_ where the application directly sends logs into a logs aggregator service. 
 
@@ -63,15 +64,15 @@ _Mount sensitive configuration into volume and do not use Environment Variables.
 
 ### 2.3 Base images should be verified and reviewed
 
-Ensure that the container image is written either from scratch or is based on another established and trusted base image downloaded over a secure channel.
+Ensure that the container image is written either from scratch or is based on another established and trusted base image downloaded over a secure channel.[^5]
 
 ### 2.4 Process must run with a dedicated user
 
-Dockerfile must contain the `USER username` instruction.
+Dockerfile must contain the `USER username` instruction.[^5]
 
 ### 2.5 Images must run a single process
 
-If a service requires multiple process use container linking or the sidecar pattern.
+If a service requires multiple process use container linking or the sidecar pattern.[^5]
 
 ### 2.6 Installed package must be the minimal required
 
@@ -79,7 +80,7 @@ Do not install anything that does not justify the purpose of container.
 
 ### 2.7 Images must be rebuilt to include security patches
 
-Evaluate available security patches and rebuilt all images impacted.
+Evaluate available security patches and rebuilt all images impacted.[^5]
 
 ### 2.8 Run at least JRE 11+
 
@@ -106,15 +107,15 @@ Use host resource management capabilities to control containers resource usage.
 
 ### 3.3 Containers must not use `privileged` mode
 
-Giving container only restricted access to resources on the host system to increase security. 
+Giving container only restricted access to resources on the host system to increase security.[^5] 
 
 ### 3.4 Containers must run with right capabilities
 
 Docker gives by default the following capabilities: `AUDIT_WRITE`, `CHOWN`, `DAC_OVERRIDE`, `FOWNER`, `FSETID`, `KILL`, `MKNOD`, `NET_BIND_SERVICE`, `NET_RAW`, `SETFCAP`, `SETGID`, `SETPCAP`, `SETUID`, `SYS_CHROOT`.  
-Always run a container disabling all capabilities and activating only the one required by the application.  
+Always run a container disabling all capabilities and activating only the one required by the application.[^6]  
   
-One capability that could be useful is `NET_BIND_SERVICE` as it is required to bind a port below 1024 inside a container.
-Enable this capability only when the binding port cannot be changed to a higher value.
+One capability that could be required is `NET_BIND_SERVICE` when the application requires to bind a port below 1024 inside a container.
+_Enable this capability only when the binding port cannot be changed to a higher value._
 
 ### 3.5 Containers must run with a dedicated user
 
@@ -130,7 +131,7 @@ If a container is totally immutable, run the container with a read-only filesyst
 
 ### 3.8 Limit the `on-failure` restart policy
 
-Prevent indefinitely restarting containers by using a fixed restart policy.
+Prevent indefinitely restarting containers by using a fixed restart policy.[^5]
 
 ### 3.9 Containers should have metadata
 
@@ -149,3 +150,9 @@ Owner         | The team owning the application                                 
 Data Category | Data confidentiality level                                                              |sensitive    |
 Compliance    | Specific compliance requirements                                                        |pci-store    |
 
+[^1]: [Setting up health checks with readiness and liveness probes](https://cloud.google.com/blog/products/gcp/kubernetes-best-practices-setting-up-health-checks-with-readiness-and-liveness-probes)
+[^2]: [Configure Liveness, Readiness and Startup Probes](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+[^3]: [Shooting Yourself in the Foot with Readiness Probes](https://blog.colinbreck.com/kubernetes-liveness-and-readiness-probes-how-to-avoid-shooting-yourself-in-the-foot/#shootingyourselfinthefootwithreadinessprobes)
+[^4]: [The Twelve-Factor App — XI. Logs](https://12factor.net/logs)
+[^5]: [CIS Docker Community Edition Benchmark](https://www.cisecurity.org/benchmark/docker/)
+[^6]: [Secure Your Containers with this One Weird Trick](https://www.redhat.com/en/blog/secure-your-containers-one-weird-trick)
