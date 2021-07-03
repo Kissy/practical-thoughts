@@ -2,14 +2,10 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>About on Practical Thoughts</title>
-    <link>https://blog.kissy.fr/about/</link>
+    <link>https://blog.lebiller.dev/about/</link>
     <description>Recent content in About on Practical Thoughts</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0200</lastBuildDate>
-    
-	<atom:link href="https://blog.kissy.fr/about/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <lastBuildDate>Tue, 01 Jan 2019 00:00:00 +0200</lastBuildDate><atom:link href="https://blog.lebiller.dev/about/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

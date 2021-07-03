@@ -9,12 +9,13 @@
   
     <meta name="twitter:card" content="summary"/>
     
-      <meta name="twitter:image" content="https://blog.kissy.fr/images/avatar.png" />
+      <meta name="twitter:image" content="https://blog.lebiller.dev/images/avatar.png" />
     
   
   
   <meta name="twitter:title" content="Reinforcement learning : an introduction"/>
   <meta name="twitter:description" content="
+
 Learning by interacting with an environment is how people and animals learns.
 A computer or an agent can also learn the same way."/>
   
@@ -29,9 +30,9 @@ A computer or an agent can also learn the same way."/>
 		
 		<meta name="author" content="Guillaume Le Biller">
 		<meta name="description" content="Any fool can know. The point is to understand.">
-		<meta name="generator" content="Hugo 0.69.2" />
+		<meta name="generator" content="Hugo 0.84.1" />
 		<title>Reinforcement learning : an introduction &middot; Practical Thoughts</title>
-		<link rel="shortcut icon" href="https://blog.kissy.fr/images/favicon.ico">
+		<link rel="shortcut icon" href="https://blog.lebiller.dev/images/favicon.ico">
 
 		
 		<link rel="stylesheet" href="/css/bundle.min.css">
@@ -46,11 +47,11 @@ A computer or an agent can also learn the same way."/>
        <nav class="main-nav">
 	
 	
-		<a href='https://blog.kissy.fr/'> <span class="arrow">←</span>Home</a>
+		<a href='https://blog.lebiller.dev/'> <span class="arrow">←</span>Home</a>
 	
-	<a href='https://blog.kissy.fr/posts'>Archive</a>
-	<a href='https://blog.kissy.fr/tags'>Tags</a>
-	<a href='https://blog.kissy.fr/about'>About</a>
+	<a href='https://blog.lebiller.dev/posts'>Archive</a>
+	<a href='https://blog.lebiller.dev/tags'>Tags</a>
+	<a href='https://blog.lebiller.dev/about'>About</a>
 
 	
 
@@ -66,8 +67,8 @@ A computer or an agent can also learn the same way."/>
                     </h1>
                     <h2 class="headline">
                     Mar 11, 2019
-                    · 762 words
-                    · 4 minute read
+                    · 860 words
+                    · 5 minute read
                       <span class="tags">
                       
                       </span>
@@ -75,7 +76,8 @@ A computer or an agent can also learn the same way."/>
                 </header>
                 
                 <section id="post-body">
-                    <!-- raw HTML omitted -->
+                    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="policy-evaluation-demo.css" rel="stylesheet"></link>
 <p>Learning by interacting with an environment is how people and animals learns.
 A computer or an agent can also learn the same way.</p>
 <p>Reinforcement learning is focused on goal-directed learning from interaction
@@ -127,14 +129,19 @@ $R_{t+1} \in \mathcal R \subset \mathbb R$ with a new _state_ $S_{t+1}$.</p>
 <p>$$S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, R_3, \ldots$$</p>
 <h2 id="return">Return</h2>
 <p>The return is the sum of rewards and is defined as:</p>
-<!-- raw HTML omitted -->
+<div>$$\mathit G_t \dot= R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots + R_{T}$$</div>
 <p>This approach is valid only for tasks with an actual <em>terminal state</em> $T$, called <em>episodic tasks</em>.</p>
 <h2 id="discounted-return">Discounted return</h2>
 <p>In case of <em>continuing task</em> (i.e. $T = \infty$) the return $G_t$ could be infinite.
 To make the return finite, we introduce a discount factor $\gamma$ and defining the discounted return:</p>
-<!-- raw HTML omitted -->
+<div>$$\begin{aligned}
+G_t &\dot= R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots \\
+    &\dot= \sum_{k=0}^\infty \gamma^k R_{t+k+1}
+\end{aligned}$$</div>
 <p>The return can be slightly modified to take into account both <em>continuing tasks</em> and <em>episodic tasks</em>:</p>
-<!-- raw HTML omitted -->
+<div>$$G_t \dot= \sum_{k=t+1}^T \gamma^{k-t-1} R_k \\
+\text{with $\mathit T = \infty$ or $\gamma = 1$ but not both.}
+$$</div>
 <h2 id="policy">Policy</h2>
 <p>A <em>policy</em> is a mapping from states to probability of selecting each possible action.
 We denote $\pi(a|s)$ the probability that $A_t = a \text{ if } S_t = s$
@@ -145,16 +152,16 @@ The reward is immediate but the value is the expected sum of future rewards.</p>
 <h3 id="state-value-function">State-Value function</h3>
 <p>The <em>state-value function</em> of a state $s$ under policy $\pi$,
 denoted $v_\pi(s)$, is the expected return when starting in $s$ and following $\pi$ thereafter:</p>
-<!-- raw HTML omitted -->
+<div>$$v_{\pi}(s) \dot= \mathbb E_{\pi}[G_t | S_t = s]$$</div>
 <p>The <em>optimal state-value function</em>, denoted $v_*(s)$ defined as:</p>
-<!-- raw HTML omitted -->
+<div>$$v_*(s) \dot= \max_\pi v_\pi(s) \text{ , for all } s \in \mathcal S$$</div>
 <h3 id="action-value-function">Action-Value function</h3>
 <p>The <em>action-value function</em> of taking action $a$ in state $s$ under policy $\pi$,
 denoted $q_\pi(s, a)$, is the expected return when starting from $s$, taking the action $a$,
 and following policy $\pi$ thereafter:</p>
-<!-- raw HTML omitted -->
+<div>$$q_{\pi}(s,a) \dot= \mathbb E_{\pi}[G_t | S_t = s, A_t = a]$$</div>
 <p>The <em>optimal action-value function</em>, denoted $v_*(s)$ defined as:</p>
-<!-- raw HTML omitted -->
+<div>$$q_*(s, a) \dot= \max_\pi q_\pi(s, a) \text{ , for all } s \in \mathcal S$$</div>
 <h3 id="optimal-policy">Optimal policy</h3>
 <p>The optimal state-value function or optimal action-value function
 are found for at least one policy called the <em>optimal policy</em> and denoted $\pi_*$.</p>
@@ -172,11 +179,11 @@ are found for at least one policy called the <em>optimal policy</em> and denoted
         <div id="social">
     
     <a class="symbol" href="https://www.github.com/Kissy" target="_blank">
-        <img src="https://blog.kissy.fr/images/github-icon.svg" />
+        <img src="https://blog.lebiller.dev/images/github-icon.svg" />
     </a>
     
     <a class="symbol" href="https://www.linkedin.com/in/guillaume-le-biller-b1b38773/" target="_blank">
-        <img src="https://blog.kissy.fr/images/linkedin-icon.svg" />
+        <img src="https://blog.lebiller.dev/images/linkedin-icon.svg" />
     </a>
     
 </div>
@@ -184,7 +191,7 @@ are found for at least one policy called the <em>optimal policy</em> and denoted
     
     <p class="small">
     
-       © Copyright 2020 | Guillaume Le Biller
+       © Copyright 2021 | Guillaume Le Biller
     
     </p>
     <p class="small">
@@ -195,7 +202,7 @@ are found for at least one policy called the <em>optimal policy</em> and denoted
         </section>
 
         
-<script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2){return;}\nvar images=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(images,function(el,i){var src=el.getAttribute(\"data-2x\");el.setAttribute(\"src\",src);});});"</script>
+<script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2)return;var a=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(a,function(a,c){var b=a.getAttribute(\"data-2x\");a.setAttribute(\"src\",b)})})"</script>
 
 
 
@@ -225,21 +232,6 @@ MathJax.Hub.Config({
 
 <script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js">
     hljs.initHighlightingOnLoad();
-</script>
-
-
-  
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-	ga('create', 'UA-4258818-9', 'auto');
-	
-	ga('send', 'pageview');
-}
 </script>
 
 

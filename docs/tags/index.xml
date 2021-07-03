@@ -2,13 +2,9 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Practical Thoughts</title>
-    <link>https://blog.kissy.fr/tags/</link>
+    <link>https://blog.lebiller.dev/tags/</link>
     <description>Recent content in Tags on Practical Thoughts</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en</language>
-    
-	<atom:link href="https://blog.kissy.fr/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <language>en</language><atom:link href="https://blog.lebiller.dev/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

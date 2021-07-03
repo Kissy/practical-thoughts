@@ -1,21 +1,20 @@
 # Site settings
-baseurl = "https://blog.kissy.fr/"
+baseurl = "https://blog.lebiller.dev/"
 languageCode = "en"
 title = "Practical Thoughts"
 theme = "hugo-theme-cactus-plus"
-googleAnalytics = "UA-4258818-9"
 hasCJKLanguage = false
 pygmentsUseClasses = false
 pygmentsStyle = "friendly"
 publishDir = "docs"
 
+[markup.goldmark.renderer]
+    unsafe = true
+
 [params]
     author = "Guillaume Le Biller"
     description = "Any fool can know. The point is to understand."
     bio = "I am a curious and constantly learning engineer passionate about all technologies"
-
-    #	twitter = "your_twitter_id"
-    #	facebook = "your_facebook_id"
 
     enableRSS = false
     enableToc = false
@@ -23,11 +22,10 @@ publishDir = "docs"
     enableDisqus = false
     disqusShortname = "your_disqus_short_name"
 
-
     enableSummary = true
     useDescriptionReplaceSummary = false
 
-    enableGoogleAnalytics = true
+    enableGoogleAnalytics = false
 
     enableTwitterCard = true
     twitterCardImage = ""

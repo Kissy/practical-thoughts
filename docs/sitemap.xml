@@ -1,63 +1,42 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  
   <url>
-    <loc>https://blog.kissy.fr/posts/jenkins-scripted-pipeline-collection/</loc>
+    <loc>https://blog.lebiller.dev/posts/comparison-of-kubernetes-security-analysers/</loc>
+    <lastmod>2021-07-03T00:00:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.lebiller.dev/posts/</loc>
+    <lastmod>2021-07-03T00:00:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.lebiller.dev/</loc>
+    <lastmod>2021-07-03T00:00:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.lebiller.dev/posts/jenkins-scripted-pipeline-collection/</loc>
     <lastmod>2020-10-11T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/posts/</loc>
-    <lastmod>2020-10-11T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/</loc>
-    <lastmod>2020-10-11T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/posts/containers-best-practices/</loc>
+  </url><url>
+    <loc>https://blog.lebiller.dev/posts/containers-best-practices/</loc>
     <lastmod>2020-05-10T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/posts/reinforcement-learning-algorithms/policy-iteration/</loc>
+  </url><url>
+    <loc>https://blog.lebiller.dev/posts/reinforcement-learning-algorithms/policy-iteration/</loc>
     <lastmod>2019-03-30T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/posts/reinforcement-learning-algorithms/policy-evaluation/</loc>
+  </url><url>
+    <loc>https://blog.lebiller.dev/posts/reinforcement-learning-algorithms/policy-evaluation/</loc>
     <lastmod>2019-03-23T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/posts/reinforcement-learning-algorithms/</loc>
+  </url><url>
+    <loc>https://blog.lebiller.dev/posts/reinforcement-learning-algorithms/</loc>
     <lastmod>2019-03-23T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/posts/reinforcement-learning-an-introduction/</loc>
+  </url><url>
+    <loc>https://blog.lebiller.dev/posts/reinforcement-learning-an-introduction/</loc>
     <lastmod>2019-03-11T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/posts/self-signed-ssl-certificate-for-multiple-domains/</loc>
+  </url><url>
+    <loc>https://blog.lebiller.dev/posts/self-signed-ssl-certificate-for-multiple-domains/</loc>
     <lastmod>2019-03-01T00:00:00+02:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/about/</loc>
+  </url><url>
+    <loc>https://blog.lebiller.dev/about/</loc>
     <lastmod>2019-01-01T00:00:00+02:00</lastmod>
+  </url><url>
+    <loc>https://blog.lebiller.dev/categories/</loc>
+  </url><url>
+    <loc>https://blog.lebiller.dev/tags/</loc>
   </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/categories/</loc>
-  </url>
-  
-  <url>
-    <loc>https://blog.kissy.fr/tags/</loc>
-  </url>
-  
 </urlset>

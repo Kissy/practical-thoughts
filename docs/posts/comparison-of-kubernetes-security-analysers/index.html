@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		 
+			
+  
+    <meta name="twitter:card" content="summary"/>
+    
+      <meta name="twitter:image" content="https://blog.lebiller.dev/images/avatar.png" />
+    
+  
+  
+  <meta name="twitter:title" content="Comparison of Kubernetes security analysers"/>
+  <meta name="twitter:description" content="Comparing open-source solution kube-score, kubeaudit and kyverno to perform
+security analysis on Kubernetes resources."/>
+  
+  
+  
+  
+    <meta name="twitter:creator" content="@Guillaume Le Biller"/>
+  
+
+
+
+		
+		<meta name="author" content="Guillaume Le Biller">
+		<meta name="description" content="Any fool can know. The point is to understand.">
+		<meta name="generator" content="Hugo 0.84.1" />
+		<title>Comparison of Kubernetes security analysers &middot; Practical Thoughts</title>
+		<link rel="shortcut icon" href="https://blog.lebiller.dev/images/favicon.ico">
+
+		
+		<link rel="stylesheet" href="/css/bundle.min.css">
+
+		
+		
+
+		
+	</head>
+
+    <body>
+       <nav class="main-nav">
+	
+	
+		<a href='https://blog.lebiller.dev/'> <span class="arrow">←</span>Home</a>
+	
+	<a href='https://blog.lebiller.dev/posts'>Archive</a>
+	<a href='https://blog.lebiller.dev/tags'>Tags</a>
+	<a href='https://blog.lebiller.dev/about'>About</a>
+
+	
+
+	
+</nav>
+
+
+        <section id="wrapper" class="post">
+            <article>
+                <header>
+                    <h1>
+                        Comparison of Kubernetes security analysers
+                    </h1>
+                    <h2 class="headline">
+                    Jul 3, 2021
+                    · 481 words
+                    · 3 minute read
+                      <span class="tags">
+                      
+                      </span>
+                    </h2>
+                </header>
+                
+                  
+                    <div id="toc">
+                      <nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-installation">1. Installation</a></li>
+    <li><a href="#2-usage">2. Usage</a></li>
+    <li><a href="#3-checks">3. Checks</a></li>
+  </ul>
+</nav>
+                    </div>
+                  
+                
+                <section id="post-body">
+                    <p>Comparing open-source solution kube-score, kubeaudit and kyverno to perform
+security analysis on Kubernetes resources.</p>
+<h2 id="1-installation">1. Installation</h2>
+<p>All tools are available on Github:</p>
+<ul>
+<li><a href="https://github.com/zegl/kube-score">kube-score</a></li>
+<li><a href="https://github.com/Shopify/kubeaudit">kubeaudit</a></li>
+<li><a href="https://github.com/kyverno/kyverno">Kyverno</a></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>kube-score</th>
+<th>Kubeaudit</th>
+<th>Kyverno</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Docker image</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Krew</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Linux</td>
+<td>✅</td>
+<td>✅</td>
+<td>ArchLinux</td>
+</tr>
+<tr>
+<td>MacOS</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Brew</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Windows</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<p>In addition, all are written using Golang and can be built from source easily for any platforms.</p>
+<h2 id="2-usage">2. Usage</h2>
+<p>All tools provide a similar cli that can run either on local manifest files
+or directly on a running cluster. Kyverno requires to compile the list of checks to run beforehand.</p>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>kube-score</th>
+<th>Kubeaudit</th>
+<th>Kyverno</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Manifest files</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Cluster</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Admission Controller</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-checks">3. Checks</h2>
+<p>For all of kube-score, kubeaudit and kyverno the checks can be disabled.
+Some checks have advanced configuration noted with 🛠.</p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Check</th>
+<th>kube-score</th>
+<th>Kubeaudit</th>
+<th>Kyverno</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pod</td>
+<td>Require using <code>AppArmor</code></td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Prevent using default service account</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Restrict using unsecure linux capabilities</td>
+<td>❌</td>
+<td>✅ 🛠</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Restrict using <code>HostPID</code>, <code>HostIPC</code> or <code>HostNetwork</code></td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require using image tag</td>
+<td>✅</td>
+<td>✅ 🛠</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require using image registry</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅ 🛠</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require using <code>Always</code> pull policy</td>
+<td>✅</td>
+<td>✅ 🛠</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require using requests and limits</td>
+<td>✅</td>
+<td>✅ 🛠</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require using same requests as limits</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Restrict mounting sensitive host directories</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Restrict running as root</td>
+<td>❌</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require running with user and group id &gt; 10000</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅ 🛠</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Restrict privilege escalation</td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require read-only filesystem</td>
+<td>✅</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require using <code>seccomp</code></td>
+<td>✅</td>
+<td>✅</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require having at least one <code>NetworkPolicy</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require configuring probes</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require using secret from EnvVars</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Pod</td>
+<td>Require using <code>SELinux</code></td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>CronJob</td>
+<td>Require deadline</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>StatefulSet</td>
+<td>Require using <code>PodDisruptionBudget</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>StatefulSet</td>
+<td>Require using <code>PodAntiAfinity</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>StatefulSet</td>
+<td>Require having existing <code>serviceName</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>Require using <code>PodDisruptionBudget</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>Require using <code>PodAntiAfinity</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Deployment</td>
+<td>Restrict using both <code>HorizontalPodAutoscaler</code> and <code>replicas</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Require targeting a <code>Pod</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Service</td>
+<td>Restrict using <code>NodePort</code> service type</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Ingress</td>
+<td>Require targeting a <code>Service</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Namespace</td>
+<td>Require default <code>NetworkPolicy</code></td>
+<td>❌</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>Namespace</td>
+<td>Restrict using default namespace</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>NetworkPolicy</td>
+<td>Require targeting a <code>Pod</code></td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>HorizontalPodAutoscaler</td>
+<td>Require targeting a valid resource</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>All</td>
+<td>Require using non-deprecated stable api version</td>
+<td>✅</td>
+<td>❌</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>All</td>
+<td>Require labels</td>
+<td>✅</td>
+<td>❌</td>
+<td>✅ 🛠</td>
+</tr>
+<tr>
+<td>All</td>
+<td>Restrict annotations</td>
+<td>❌</td>
+<td>❌</td>
+<td>✅ 🛠</td>
+</tr>
+</tbody>
+</table>
+<p>Kube-score is providing a more complete list of security checks out of the box
+but Kyverno is completely customizable but requires to build the list of checks to run beforehand.</p>
+                </section>
+            </article>
+
+            
+
+            
+
+            
+
+            <footer id="footer">
+    
+        <div id="social">
+    
+    <a class="symbol" href="https://www.github.com/Kissy" target="_blank">
+        <img src="https://blog.lebiller.dev/images/github-icon.svg" />
+    </a>
+    
+    <a class="symbol" href="https://www.linkedin.com/in/guillaume-le-biller-b1b38773/" target="_blank">
+        <img src="https://blog.lebiller.dev/images/linkedin-icon.svg" />
+    </a>
+    
+</div>
+
+    
+    <p class="small">
+    
+       © Copyright 2021 | Guillaume Le Biller
+    
+    </p>
+    <p class="small">
+        Powered by <a href="http://www.gohugo.io/">Hugo</a> Theme By <a href="https://github.com/nodejh/hugo-theme-cactus-plus">nodejh</a>
+    </p>
+</footer>
+
+        </section>
+
+        
+<script type="text/javascript">"document.addEventListener(\"DOMContentLoaded\",function(){if(window.devicePixelRatio!==2)return;var a=document.querySelectorAll(\"img[data-2x]\");Array.prototype.forEach.call(a,function(a,c){var b=a.getAttribute(\"data-2x\");a.setAttribute(\"src\",b)})})"</script>
+
+
+
+
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [['$','$'], ['\\(','\\)']],
+        displayMath: [['$$','$$']],
+        processEscapes: true,
+        processEnvironments: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        TeX: { equationNumbers: { autoNumber: "AMS" },
+            extensions: ["AMSmath.js", "AMSsymbols.js"] }
+    }
+});
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i = 0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+});
+MathJax.Hub.Config({
+    TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+<script type="text/javascript" defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js">
+    hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+    </body>
+</html>
